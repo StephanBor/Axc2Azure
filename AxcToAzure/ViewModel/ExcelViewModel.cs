@@ -46,17 +46,28 @@ namespace AxcToAzure.ViewModel
     public string WorksheetName
     {
       get { return Get<string>(); }
-      set { Set(value); SheetSelected = (value != "" && value != null); }
+      set { Set(value); SheetSelected = (value != "" && value != null); CanContinue = false; }
     }
     public string NumberColumn
     {
       get { return Get<string>(); }
-      set { Set(value); CheckColumnsValue();}
+      set { Set(value.ToUpper().Trim()); CheckColumnsValue();  }
     }
     public string DescriptionColumn
     {
       get { return Get<string>(); }
-      set { Set(value); CheckColumnsValue(); }
+      set { Set(value.ToUpper().Trim()); CheckColumnsValue(); }
+    }
+    public string EmployeeColumn
+    {
+      get { return Get<string>(); }
+      set { Set(value.ToUpper().Trim()); CheckColumnsValue(); }
+    }
+    public int DefaultEmployee
+    {
+      get { return Get<int>(); }
+      set {  Set(value); }
+
     }
     public bool FileLoaded
     {
@@ -112,6 +123,8 @@ namespace AxcToAzure.ViewModel
       CanContinue = false;
       DescriptionColumn = "";
       NumberColumn = "";
+      EmployeeColumn = "";
+      DefaultEmployee = 1;
       CreateCommands();
     }
     #endregion
@@ -122,6 +135,11 @@ namespace AxcToAzure.ViewModel
     public void OpenFile()
     {
       Working.Invoke(this, true);
+      WorksheetName = "";
+      WorksheetNames =  new ObservableCollection<string>();
+      SheetSelected = false;
+      CanContinue = false;
+
       Excel.Application excel = new Excel.Application();
       workBook = excel.Workbooks.Open(FilePath);
       for (int i = 1; i <= workBook.Worksheets.Count; i++)
@@ -138,10 +156,19 @@ namespace AxcToAzure.ViewModel
     /// </summary>
     public void CheckColumnsValue()
     {
+      CanContinue = false;
       Regex rx = new Regex(@"\A[A-Z]{1,2}\Z"); 
       if (NumberColumn == null || DescriptionColumn == null) return;
-      ColumnsSet = (rx.IsMatch(DescriptionColumn.ToUpper().Trim()) && rx.IsMatch(NumberColumn.ToUpper().Trim()));
-
+      if ( EmployeeColumn == null || EmployeeColumn =="")
+      {
+        bool IsMatch = (DescriptionColumn == NumberColumn);
+        ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && !IsMatch);
+      }
+      else
+      {
+      bool IsMatch = (DescriptionColumn == NumberColumn) || (DescriptionColumn == EmployeeColumn) || (EmployeeColumn == NumberColumn);
+          ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && rx.IsMatch(EmployeeColumn) && !IsMatch);
+      }
     }
     /// <summary>
     /// Verändert den Mousecursor bei längerem Laden
@@ -181,6 +208,7 @@ namespace AxcToAzure.ViewModel
 
           }
           string objectName = ws.Range[(DescriptionColumn + i).ToString()].Text.ToString();
+          string objectEmployee = ws.Range[(EmployeeColumn + i).ToString()].Text.ToString();
           if (epicReg.IsMatch(objectId))
           {
             DataItems.Add(CreateDataItem(objectId, objectName, "epic"));
@@ -248,6 +276,7 @@ namespace AxcToAzure.ViewModel
     public ICommand SelectFileCommand { get; private set; }
     public ICommand OpenInstructionCommand { get; private set; }
     public ICommand ReadFileCommand { get; private set; }
+    public ICommand ChangeDefaultEmployeeCommand { get; private set; }
     public ICommand ContinueCommand { get; private set; }
     public ICommand ExitCommand { get; private set; }
     public void CreateCommands()
@@ -255,7 +284,8 @@ namespace AxcToAzure.ViewModel
       SelectFileCommand = new RelayCommand(SelectFile);
       OpenInstructionCommand = new RelayCommand(OpenInstruction);
       ReadFileCommand = new RelayCommand(ReadFile);
-    ContinueCommand = new RelayCommand(Continue);
+      ChangeDefaultEmployeeCommand = new RelayCommand<string>(ChangeDefaultEmployee);
+      ContinueCommand = new RelayCommand(Continue);
       ExitCommand = new RelayCommand(Exit);
     }
     /// <summary>
@@ -263,6 +293,7 @@ namespace AxcToAzure.ViewModel
     /// </summary>
     private void SelectFile()
     {
+      if (FileInReading) return;
       OpenFileDialog selectFileDialog = new OpenFileDialog();
       selectFileDialog.Filter = "Excel files (*.xlsx)|*.xlsx";
       if (selectFileDialog.ShowDialog() == true)
@@ -283,6 +314,12 @@ namespace AxcToAzure.ViewModel
         Thread t = new Thread(sortData);
         t.Start();
       }
+    }
+    private void ChangeDefaultEmployee (string inc)
+    {
+      int x = Convert.ToInt32(inc);
+      if (FileInReading || (DefaultEmployee + x)< 1) return;
+      DefaultEmployee += x;
     }
     private void Continue()
     {
