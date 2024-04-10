@@ -1,0 +1,57 @@
+#Windows-Links ignorieren
+*.lnk
+
+#Windows Thumbnails ignorieren
+Thumbs.db
+
+#Visual Studio Dateien ignorieren
+*.obj
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.cache
+*.ilk
+*.log
+[Bb]in
+[Dd]ebug*/
+*.lib
+*.sbr
+.vs*/
+obj/
+[Rr]elease*/
+_ReSharper*/
+*~
+
+#Debug-Dateien ignorieren
+@Install*.sql
+_InstallDebug/
+_DebugClient/net472/log/*
+
+@*/
+
+#Office-Temps
+*~$*.doc*
+
+#Reste vom KDiff
+*.orig
+
+#Stack-Dumps von Github-Problemen
+us.stackdump
+
+*/db.lock
+*.ide
+*.ide-shm
+*.ide-wal
+*.lock
+
+/FLM_901_FleetManagement/.vs/FLM_901_FleetManagement/DesignTimeBuild/.dtbcache.v2
+/_DebugClient/net472/modules/PlantiT.Workflow.WPF.Fleetmanagement.dll
