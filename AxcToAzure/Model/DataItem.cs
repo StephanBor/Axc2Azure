@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AxcToAzure.Model
 {
-  public class DataItem :NotifyObject
+  public class DataItem : NotifyObject
   {
     //For Program
     public string Id { get; set; }
@@ -21,16 +21,16 @@ namespace AxcToAzure.Model
       set { Set(value); }
     }
     public string Employee { get; set; }
-    public bool EmployeeSet { get; set; }
     public string DefaultTask { get; set; }
     public ObservableCollection<DataItem> Children { get; set; }
 
     //For Azure
     public int AzureId { get; set; }
     public string AzureDate { get; set; }
+    public string AzureEmployee{get; set;}
     public DataItem() {
     Children = new ObservableCollection<DataItem>();
-      EmployeeSet = false;
+      AzureEmployee = "";
       CreateThis = true;
     }
     

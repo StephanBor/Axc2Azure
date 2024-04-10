@@ -124,7 +124,7 @@ namespace xls2aturenet6.Model
             var Result = MessageBox.Show(errortext, "Would you like to try again (without an employee set)?", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (Result == MessageBoxResult.Yes)
             {
-              item.Employee = "";
+              item.AzureEmployee = "";
               body = PrepareBody(item, parents);
               result = await BasePostRequestAsync(apiUrl, body);
               response = await result.Content.ReadAsStringAsync();
@@ -169,7 +169,7 @@ namespace xls2aturenet6.Model
         default: throw new Exception("Problem with " + item.Type + " " + item.Name);
       }
       body = body.Replace("itemName", item.Name);
-      body = body.Replace("employeeValue", item.Employee);
+      body = body.Replace("employeeValue", item.AzureEmployee);
       if (parents != null)
       {
         foreach (var parent in parents)

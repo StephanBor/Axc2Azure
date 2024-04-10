@@ -67,7 +67,7 @@ namespace AxcToAzure.ViewModel
       List<DataItem> newTasks = new List<DataItem>();
       foreach (var item in DataItems)
       {
-        if (item.Employee == "" || item.EmployeeSet) continue;
+        if (item.Employee == "") continue;
         string[] employees = item.Employee.Split(";");
         if (item.Type == "task")
         { //Copy the task
@@ -79,8 +79,8 @@ namespace AxcToAzure.ViewModel
             string axcName = @"\""24\"":\""" + firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
             if (i == 0) //Setze Employee für schon bestehenden task, danach kreire neue
             {
-              item.Employee = axcName;
-              item.EmployeeSet = true;
+              item.AzureEmployee = axcName;
+          
               continue;
             }
             DataItem task = new DataItem();
@@ -89,7 +89,7 @@ namespace AxcToAzure.ViewModel
             task.ParentId = item.ParentId;
             task.Type = item.Type;
             task.Employee = axcName;
-            task.EmployeeSet = true;
+            item.AzureEmployee = axcName;
             newTasks.Add(task);
           }
         }
@@ -102,7 +102,7 @@ namespace AxcToAzure.ViewModel
           string lastname = names[0].Trim();
           string axcName = @"\""24\"":\"""+firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
           item.Employee = axcName;
-          item.EmployeeSet = true;
+          item.AzureEmployee = axcName;
         }
       }
       //Nun füge neu angelegte Tasks wieder ein
