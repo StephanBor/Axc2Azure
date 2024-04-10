@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -178,6 +179,7 @@ namespace AxcToAzure.ViewModel
       FileInReading = true;
       CanContinue = false;
       DataItems = new ObservableCollection<DataItem>();
+      bool useEmployees = (EmployeeColumn != null && EmployeeColumn != "");
       try
       {
         // Holt sich das richtige Arbeitsblatt
@@ -189,6 +191,7 @@ namespace AxcToAzure.ViewModel
         Regex featureReg = new Regex(@"^\d+\.\d+\Z");
         Regex storyReg = new Regex(@"^\d+\.\d+\.\d+\Z");
         Regex taskReg = new Regex(@"^\d+\.\d+\.\d+\.\d+\Z");
+        Regex employeeReg = new Regex(@"^[A-Z][a-z]+\,[A-Z][a-z]+(\;[A-Z][a-z]+\,[A-Z][a-z]+)*\Z");
         ItemWorkedOn = "";
         BarProgress = 0;
         //Sortierschleife
@@ -208,22 +211,28 @@ namespace AxcToAzure.ViewModel
 
           }
           string objectName = ws.Range[(DescriptionColumn + i).ToString()].Text.ToString();
-          string objectEmployee = ws.Range[(EmployeeColumn + i).ToString()].Text.ToString();
+          string objectEmployee = "";
+          if (useEmployees)
+          {
+            objectEmployee = ws.Range[(EmployeeColumn + i).ToString()].Text.ToString();
+            bool IsMatch = employeeReg.IsMatch(Regex.Replace(objectEmployee, @"\s+", string.Empty));
+            if (!IsMatch) objectEmployee = ""; // Replace whitespace characters
+          }
           if (epicReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, "epic"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "epic"));
           }
           if (featureReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, "feature"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "feature"));
           }
           if (storyReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, "story"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "story"));
           }
           if (taskReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, "task"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "task"));
           }
         }
         SetItemChildren();
@@ -239,13 +248,15 @@ namespace AxcToAzure.ViewModel
       FileInReading = false;
       CanContinue = (ItemWorkedOn != "Error");
     }
-    public DataItem CreateDataItem(string testId, string name, string type)
+    
+    public DataItem CreateDataItem(string testId, string name, string employee, string type)
     {
       DataItem dataItem = new DataItem();
       dataItem.Id = testId;
       dataItem.Name = name.Replace("\"", "\'");
       dataItem.Type = type;
       dataItem.ParentId = "";
+      dataItem.Employee = employee;
       if (type != "epic")
       {
         dataItem.ParentId = testId.Substring(0, testId.LastIndexOf("."));

@@ -99,7 +99,7 @@ namespace AxcToAzure.ViewModel
           //Neue Events hinzufügen
           DefaultTaskViewModel.ChangeStep += ChangeStep;
           DefaultTaskViewModel.Working += SetMouseLoading;
-          DefaultTaskViewModel.FilterCreatableItems(ItemSelectViewModel.DataItems);
+          DefaultTaskViewModel.FilterCreatableItems(ItemSelectViewModel.DataItems, ExcelViewModel.DefaultEmployee);
           //Datenübergabe
           DefaultTaskViewModel.RefreshDefaultTaskList();
           DefaultTaskViewModel.SelectUserStories();

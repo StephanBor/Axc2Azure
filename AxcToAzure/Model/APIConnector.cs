@@ -26,19 +26,19 @@ namespace xls2aturenet6.Model
     public object JsonConvert { get; private set; }
 
     public string epicBody = @"{
-    ""updatePackage"": ""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",\""25\"":\""Epic\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId}}]""
+    ""updatePackage"": ""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Epic\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId}}]""
     }";
 
     public string featureBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",\""25\"":\""Feature\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
+""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Feature\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
 }";
 
     public string storyBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-1,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",\""25\"":\""User Story\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
+""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-1,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""User Story\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
 }";
 
     public string taskBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-2,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",\""25\"":\""Task\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
+""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-2,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Task\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
 }";
     //public Dictionary<int, WorkProject> WorkProjects = new();
     #endregion Properties
@@ -95,9 +95,6 @@ namespace xls2aturenet6.Model
         jsonResponse = JObject.Parse(response);
         string teamId = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children").Where(x => x.Value<string>("name") == teamBacklogName).First().Value<string>("id");
         string projectId = jsonResponse.Value<string>("id");
-
-        //Post Api Url bereitmachen
-        Url = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
         // Post Bodies vorbereiten
         epicBody = epicBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
         featureBody = featureBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
@@ -113,62 +110,89 @@ namespace xls2aturenet6.Model
       try
       {
         string body = "";
+        //Post Api Url bereitmachen
+        string apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
         foreach (DataItem item in items)
         {
-          switch (item.Type)
-          {
-            case "epic":
-              body = epicBody;
-
-              break;
-            case "feature":
-              body = featureBody;
-
-              break;
-            case "story":
-              body = storyBody;
-
-              break;
-            case "task":
-              body = taskBody;
-
-              break;
-            default: throw new Exception("Problem with " + item.Type + " " + item.Name);
-          }
-          body = body.Replace("itemName", item.Name);
-          if (parents != null)
-          {
-            foreach (var parent in parents)
-            {
-              if (parent.Id == item.ParentId)
-              {
-                body = body.Replace("parentId", parent.AzureId.ToString());
-                body = body.Replace("azDate", parent.AzureDate);
-                break;
-              }
-            }
-          }
-          var result = await BasePostRequestAsync(body);
+          body = PrepareBody(item, parents);
+          var result = await BasePostRequestAsync(apiUrl, body);
           var response = await result.Content.ReadAsStringAsync();
           var jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
-          if (jsonResponse.Value<string>("state").ToLower() == "error") throw new Exception(jsonResponse.Value<JObject>("error").Value<string>("message"));
+          if (jsonResponse.Value<string>("state").ToLower() == "error")
+          {
+            string errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
+            var Result = MessageBox.Show(errortext, "Would you like to try again (without an employee set)?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (Result == MessageBoxResult.Yes)
+            {
+              item.Employee = "";
+              body = PrepareBody(item, parents);
+              result = await BasePostRequestAsync(apiUrl, body);
+              response = await result.Content.ReadAsStringAsync();
+              jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
+              if (jsonResponse.Value<string>("state").ToLower() == "error")
+              {
+                errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
+              }
+            }
+            Result = MessageBox.Show(errortext, "Would you like to continue with the next item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (Result == MessageBoxResult.Yes) continue;
+            else return false;
+          }
           item.AzureId = jsonResponse.Value<int>("id");
           item.AzureDate = jsonResponse.Value<JObject>("fields").Value<string>("-5");
-
         }
         return true;
       }
       catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
     }
-    public async Task<HttpResponseMessage> BasePostRequestAsync(string jsonRequestBody)
+    public string PrepareBody (DataItem item, List<DataItem> parents)
+    {
+      string body = "";
+      switch (item.Type)
+      {
+        case "epic":
+          body = epicBody;
+
+          break;
+        case "feature":
+          body = featureBody;
+
+          break;
+        case "story":
+          body = storyBody;
+
+          break;
+        case "task":
+          body = taskBody;
+
+          break;
+        default: throw new Exception("Problem with " + item.Type + " " + item.Name);
+      }
+      body = body.Replace("itemName", item.Name);
+      body = body.Replace("employeeValue", item.Employee);
+      if (parents != null)
+      {
+        foreach (var parent in parents)
+        {
+          if (parent.Id == item.ParentId)
+          {
+            body = body.Replace("parentId", parent.AzureId.ToString());
+            body = body.Replace("azDate", parent.AzureDate);
+            break;
+          }
+        }
+      }
+      return body;
+    }
+    public async Task<HttpResponseMessage> BasePostRequestAsync(string apiUrl, string jsonRequestBody)
     {
       HttpContent contentbody = new StringContent(jsonRequestBody, Encoding.UTF8, "application/json");
-      HttpResponseMessage response = await client.PostAsync(Url, contentbody);
+      HttpResponseMessage response = await client.PostAsync(apiUrl, contentbody);
       return response;
     }
-    public async Task<HttpResponseMessage> BaseGetRequestAsync(string url)
+    public async Task<HttpResponseMessage> BaseGetRequestAsync(string apiUrl)
     {
-      HttpResponseMessage response = await client.GetAsync(url);
+      HttpResponseMessage response = await client.GetAsync(apiUrl);
       return response;
     }
     #endregion Methods

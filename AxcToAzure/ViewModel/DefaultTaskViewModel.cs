@@ -53,12 +53,63 @@ namespace AxcToAzure.ViewModel
     }
     #endregion
     #region Methods
-    public void FilterCreatableItems(ObservableCollection<DataItem> items)
+    public void FilterCreatableItems(ObservableCollection<DataItem> items, int defaultEmployee)
     {
       DataItems = new ObservableCollection<DataItem>();
-      foreach(var item in items)
+      foreach (var item in items)
       {
-        if(item.CreateThis) DataItems.Add(item);
+        if (item.CreateThis) DataItems.Add(item);
+      }
+      SetItemEmployees(defaultEmployee);
+    }
+    public void SetItemEmployees(int defaultEmployee)
+    {
+      List<DataItem> newTasks = new List<DataItem>();
+      foreach (var item in DataItems)
+      {
+        if (item.Employee == "" || item.EmployeeSet) continue;
+        string[] employees = item.Employee.Split(";");
+        if (item.Type == "task")
+        { //Copy the task
+          for (int i = 0; i < employees.Length; i++)
+          {
+            string[] names = employees[i].Split(",");
+            string firstname = names[1].Trim();
+            string lastname = names[0].Trim();
+            string axcName = @"\""24\"":\""" + firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
+            if (i == 0) //Setze Employee für schon bestehenden task, danach kreire neue
+            {
+              item.Employee = axcName;
+              item.EmployeeSet = true;
+              continue;
+            }
+            DataItem task = new DataItem();
+            task.Id = item.Id;
+            task.Name = item.Name;
+            task.ParentId = item.ParentId;
+            task.Type = item.Type;
+            task.Employee = axcName;
+            task.EmployeeSet = true;
+            newTasks.Add(task);
+          }
+        }
+        else
+        {
+          //Wenn Defaultemployees zu hoch eingestellt ist, nimm letzten Employee
+          int emplid = (defaultEmployee > employees.Length) ? employees.Length - 1 : defaultEmployee - 1 ;
+          string[] names = employees[emplid].Split(","); 
+          string firstname = names[1].Trim();
+          string lastname = names[0].Trim();
+          string axcName = @"\""24\"":\"""+firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
+          item.Employee = axcName;
+          item.EmployeeSet = true;
+        }
+      }
+      //Nun füge neu angelegte Tasks wieder ein
+      foreach (var task in newTasks)
+      {
+        DataItems.Add(task);
+        DataItems.Where(x => x.Id == task.ParentId).First().Children.Add(task);
       }
     }
     public void SelectUserStories()
@@ -71,7 +122,7 @@ namespace AxcToAzure.ViewModel
     }
     private void AddDefaultTasksToStory(string[] newTasks, DataItem story)
     {
-      int newChildIndex= GetLastChildIndexOfStory(story.Children)+1;
+      int newChildIndex = GetLastChildIndexOfStory(story.Children) + 1;
       foreach (var task in newTasks)
       {
         if (task != null && task.Trim() != "")
@@ -90,10 +141,10 @@ namespace AxcToAzure.ViewModel
     private int GetLastChildIndexOfStory(ObservableCollection<DataItem> Children)
     {
       int lastIndex = 0;
-      foreach( var child in Children)
+      foreach (var child in Children)
       {
-        int compareIndex = Convert.ToInt32(child.Id.Substring(child.Id.LastIndexOf(".")+1));
-        if(compareIndex > lastIndex)
+        int compareIndex = Convert.ToInt32(child.Id.Substring(child.Id.LastIndexOf(".") + 1));
+        if (compareIndex > lastIndex)
         {
           lastIndex = compareIndex;
         }
@@ -145,9 +196,9 @@ namespace AxcToAzure.ViewModel
           DefaultTaskList.Add(key, value);
         }
       }
-      catch(Exception ex) { MessageBox.Show(ex.ToString()); }
+      catch (Exception ex) { MessageBox.Show(ex.ToString()); }
       workBook.Close();
-          Working.Invoke(this, false);
+      Working.Invoke(this, false);
     }
     private void Continue()
     {
@@ -155,7 +206,7 @@ namespace AxcToAzure.ViewModel
       //ChangeStep(this, 4);
       foreach (var story in Stories)
       {
-        if(story.DefaultTask != "" && story.DefaultTask != null)
+        if (story.DefaultTask != "" && story.DefaultTask != null)
         {
           AddDefaultTasksToStory(story.DefaultTask.Split(";"), story);
         }

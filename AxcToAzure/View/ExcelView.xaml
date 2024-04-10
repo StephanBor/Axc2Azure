@@ -37,12 +37,12 @@
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row ="0" Text="Path to the Excel-File (.xlsx):"  Margin="2.5,2.5,0,2.5"/>
-        <TextBlock Grid.Row ="1" Text="Name of the Worksheet:" Margin="2.5,2.5,0,2.5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="2" Text="Column for Projectdescriptions:  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="3" Text="Column for Projectnumbers: " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="4" Text="Column for Employees assigned (optional):  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="5" Text="Default Employee if more than 1 (not for Tasks): " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="0" ToolTip="Click on the three dots, then select your Excel File" Text="Path to the Excel-File (.xlsx):"  Margin="2.5,2.5,0,2.5"/>
+        <TextBlock Grid.Row ="1" ToolTip="Select which worksheet contains the informations." Text="Name of the Worksheet:" Margin="2.5,2.5,0,2.5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="2" ToolTip="Set which column contains the Description of the Items." Text="Column for Itemdescriptions:  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="3" ToolTip="Set which column contains the Projectnumber of the Items." Text="Column for Itemnumbers: " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="4" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" Text="Column for Employees assigned (optional):  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="5" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." Text="Default Employee (if more than 1): " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
       </Grid>
       <!-- Input-->
       <Grid Grid.Column="1">
