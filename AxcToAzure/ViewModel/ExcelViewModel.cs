@@ -149,6 +149,7 @@ namespace AxcToAzure.ViewModel
     public void sortData()
     {
       FileInReading = true;
+      CanContinue = false;
       DataItems = new ObservableCollection<DataItem>();
       try
       {
