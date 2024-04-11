@@ -89,7 +89,7 @@ namespace AxcToAzure.ViewModel
             task.ParentId = item.ParentId;
             task.Type = item.Type;
             task.Employee = axcName;
-            item.AzureEmployee = axcName;
+            task.AzureEmployee = axcName;
             newTasks.Add(task);
           }
         }

@@ -121,7 +121,7 @@ namespace xls2aturenet6.Model
           if (jsonResponse.Value<string>("state").ToLower() == "error")
           {
             string errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
-            var Result = MessageBox.Show(errortext, "Would you like to try again (without an employee set)?", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var Result = MessageBox.Show(errortext + "\n\n" + "Would you like to try again (without an employee set)?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
             if (Result == MessageBoxResult.Yes)
             {
               item.AzureEmployee = "";
@@ -132,10 +132,11 @@ namespace xls2aturenet6.Model
               if (jsonResponse.Value<string>("state").ToLower() == "error")
               {
                 errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
+                Result = MessageBox.Show(errortext + "\n\n" + "Would you like to continue with the next item?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+                if (Result == MessageBoxResult.Yes) continue;
+                else return false;
               }
             }
-            Result = MessageBox.Show(errortext, "Would you like to continue with the next item?", MessageBoxButton.YesNo, MessageBoxImage.Question);
-            if (Result == MessageBoxResult.Yes) continue;
             else return false;
           }
           item.AzureId = jsonResponse.Value<int>("id");
@@ -145,7 +146,7 @@ namespace xls2aturenet6.Model
       }
       catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
     }
-    public string PrepareBody (DataItem item, List<DataItem> parents)
+    public string PrepareBody(DataItem item, List<DataItem> parents)
     {
       string body = "";
       switch (item.Type)
