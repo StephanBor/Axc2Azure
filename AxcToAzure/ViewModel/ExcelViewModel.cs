@@ -220,19 +220,19 @@ namespace AxcToAzure.ViewModel
           }
           if (epicReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "epic"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "Epic"));
           }
           if (featureReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "feature"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "Feature"));
           }
           if (storyReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "story"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "User Story"));
           }
           if (taskReg.IsMatch(objectId))
           {
-            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "task"));
+            DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "Task"));
           }
         }
         SetItemChildren();
@@ -257,7 +257,7 @@ namespace AxcToAzure.ViewModel
       dataItem.Type = type;
       dataItem.ParentId = "";
       dataItem.Employee = employee;
-      if (type != "epic")
+      if (type != "Epic")
       {
         dataItem.ParentId = testId.Substring(0, testId.LastIndexOf("."));
       }
@@ -269,12 +269,12 @@ namespace AxcToAzure.ViewModel
       
       foreach (var item in DataItems)
       {
-        if(item.Type != "task")
+        if(item.Type != "Task")
         {
           
           foreach (var child in DataItems)
           {
-            if (child.Type != "epic" && item.Id == child.ParentId)
+            if (child.Type != "Epic" && item.Id == child.ParentId)
             {
               item.Children.Add(child);
             }

@@ -69,7 +69,7 @@ namespace AxcToAzure.ViewModel
       {
         if (item.Employee == "") continue;
         string[] employees = item.Employee.Split(";");
-        if (item.Type == "task")
+        if (item.Type == "Task")
         { //Copy the task
           for (int i = 0; i < employees.Length; i++)
           {
@@ -117,7 +117,7 @@ namespace AxcToAzure.ViewModel
       Stories = new ObservableCollection<DataItem>();
       foreach (var item in DataItems)
       {
-        if (item.Type == "story") Stories.Add(item);
+        if (item.Type == "User Story") Stories.Add(item);
       }
     }
     private void AddDefaultTasksToStory(string[] newTasks, DataItem story)
@@ -130,7 +130,7 @@ namespace AxcToAzure.ViewModel
           DataItem newTask = new DataItem();
           newTask.Id = story.Id + "." + newChildIndex;
           newTask.Name = task.Trim();
-          newTask.Type = "task";
+          newTask.Type = "Task";
           newTask.ParentId = story.Id;
           story.Children.Add(newTask);
           DataItems.Add(newTask);

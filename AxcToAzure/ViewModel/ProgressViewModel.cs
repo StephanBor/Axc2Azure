@@ -90,13 +90,13 @@ namespace AxcToAzure.ViewModel
         if (!item.CreateThis) continue;
         switch (item.Type)
         {
-          case "epic": 
+          case "Epic": 
             epics.Add(item); break;
-          case "feature":
+          case "Feature":
             features.Add(item); break;
-          case "story":
+          case "User Story":
             stories.Add(item); break;
-          case "task":
+          case "Task":
             tasks.Add(item); break;
         }
       }

@@ -50,14 +50,14 @@ namespace AxcToAzure.ViewModel
       Nodes = new ObservableCollection<DataItem>();
       foreach (var item in DataItems)
       {
-        if (item.Type == "epic") Nodes.Add(item);
+        if (item.Type == "Epic") Nodes.Add(item);
       }
 
     }
 
     private void SetParentsCreateStatus(DataItem item)
     {
-      if (item.Type != "epic")
+      if (item.Type != "Epic")
       {
         var Parent = DataItems.Where(x => x.Id == item.ParentId).First();
         //Wenn Parent abgewählt war und Child ausgewählt => Wähle Parent aus

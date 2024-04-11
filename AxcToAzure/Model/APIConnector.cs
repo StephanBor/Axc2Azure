@@ -24,22 +24,11 @@ namespace xls2aturenet6.Model
     public string Url { get; set; }
     public bool Initialized { get; set; }
     public object JsonConvert { get; private set; }
-
-    public string epicBody = @"{
-    ""updatePackage"": ""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Epic\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId}}]""
-    }";
-
-    public string featureBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-4,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Feature\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
+    private string basicBody = @"{
+""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-1,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""itemType\"",\""10007\"":{\""type\"":1},\""10015\"":2,itemValue\""-2\"":apiTeamId,\""-104\"":apiProjectId}itemLink}]""
 }";
-
-    public string storyBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-1,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""User Story\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""10018\"":\""Business\"",\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
-}";
-
-    public string taskBody = @"{
-""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-2,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""Task\"",\""10007\"":{\""type\"":1},\""10015\"":2,\""-2\"":apiTeamId,\""-104\"":apiProjectId},\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}}]""
-}";
+    private string addedLink = @",\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}";
+    private string itemValue = @"\""10018\"":\""Business\"",";
     //public Dictionary<int, WorkProject> WorkProjects = new();
     #endregion Properties
 
@@ -95,11 +84,8 @@ namespace xls2aturenet6.Model
         jsonResponse = JObject.Parse(response);
         string teamId = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children").Where(x => x.Value<string>("name") == teamBacklogName).First().Value<string>("id");
         string projectId = jsonResponse.Value<string>("id");
-        // Post Bodies vorbereiten
-        epicBody = epicBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
-        featureBody = featureBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
-        storyBody = storyBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
-        taskBody = taskBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
+        // Post Body vorbereiten
+        basicBody = basicBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
         Initialized = true;
         return true;
       }
@@ -148,41 +134,20 @@ namespace xls2aturenet6.Model
     }
     public string PrepareBody(DataItem item, List<DataItem> parents)
     {
-      string body = "";
-      switch (item.Type)
-      {
-        case "epic":
-          body = epicBody;
-
-          break;
-        case "feature":
-          body = featureBody;
-
-          break;
-        case "story":
-          body = storyBody;
-
-          break;
-        case "task":
-          body = taskBody;
-
-          break;
-        default: throw new Exception("Problem with " + item.Type + " " + item.Name);
-      }
+      string body = basicBody;
+      body = body.Replace("itemType", item.Type);
       body = body.Replace("itemName", item.Name);
       body = body.Replace("employeeValue", item.AzureEmployee);
       if (parents != null)
       {
-        foreach (var parent in parents)
-        {
-          if (parent.Id == item.ParentId)
-          {
-            body = body.Replace("parentId", parent.AzureId.ToString());
-            body = body.Replace("azDate", parent.AzureDate);
-            break;
-          }
-        }
+        body = body.Replace("itemLink", addedLink);
+        var parent = parents.Where(x => x.Id == item.ParentId).First();
+        body = body.Replace("parentId", parent.AzureId.ToString());
+        body = body.Replace("azDate", parent.AzureDate);
       }
+      else body = body.Replace("itemLink", "");
+      if (item.Type == "Task") body = body.Replace("itemValue", "");
+      else body = body.Replace("itemValue", itemValue);
       return body;
     }
     public async Task<HttpResponseMessage> BasePostRequestAsync(string apiUrl, string jsonRequestBody)
