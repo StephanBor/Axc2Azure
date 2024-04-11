@@ -89,7 +89,7 @@ namespace xls2aturenet6.Model
         Initialized = true;
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message,"Error" ,MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public async Task<bool> WorkData(List<DataItem> items, List<DataItem> parents = null)
     {
@@ -130,7 +130,7 @@ namespace xls2aturenet6.Model
         }
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public string PrepareBody(DataItem item, List<DataItem> parents)
     {

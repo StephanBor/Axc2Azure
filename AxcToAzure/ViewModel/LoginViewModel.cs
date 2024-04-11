@@ -76,22 +76,22 @@ namespace AxcToAzure.ViewModel
     {
       if(Url == null || Url.Trim() =="")
       {
-        MessageBox.Show("Please enter a valid URL!");
+        MessageBox.Show("Please enter a valid URL!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
         return false;
       }
       if (Username == null || Username.Trim() == "")
       {
-        MessageBox.Show("Please enter a valid Usename!");
+        MessageBox.Show("Please enter a valid Usename!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       if (SecurePassword == null || SecurePassword.Length == 0)
       {
-        MessageBox.Show("Please enter a valid Password!");
+        MessageBox.Show("Please enter a valid Password!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       if (UseProxy && (ProxyAddress == null || ProxyAddress.Trim() == ""))
       {
-        MessageBox.Show("Please enter a valid Proxy Adress or uncheck the Box!");
+        MessageBox.Show("Please enter a valid Proxy Adress or uncheck the Box!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       return true;

@@ -243,7 +243,7 @@ namespace AxcToAzure.ViewModel
       catch (Exception ex) {
         ItemWorkedOn = "Error";
         BarProgress = 0; 
-        MessageBox.Show(ex.ToString()); 
+        MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error); 
       }
       FileInReading = false;
       CanContinue = (ItemWorkedOn != "Error");

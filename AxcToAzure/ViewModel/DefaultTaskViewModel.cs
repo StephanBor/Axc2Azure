@@ -196,7 +196,7 @@ namespace AxcToAzure.ViewModel
           DefaultTaskList.Add(key, value);
         }
       }
-      catch (Exception ex) { MessageBox.Show(ex.ToString()); }
+      catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
       workBook.Close();
       Working.Invoke(this, false);
     }
