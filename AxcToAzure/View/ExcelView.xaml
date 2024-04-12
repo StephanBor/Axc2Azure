@@ -59,7 +59,7 @@
               <ColumnDefinition Width="20*"/>
               <ColumnDefinition Width=" *"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"  Text="{Binding FilePath}" />
+            <TextBlock Grid.Column="0"  Text="{Binding FilePath}" Margin="3,0,0,0"/>
             <Button Grid.Column="1"  VerticalContentAlignment="Center" Command="{Binding SelectFileCommand}" FontSize="18" Content="..."/>
           </Grid>
         </Border>
@@ -141,8 +141,8 @@
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row="1" Text="{Binding Path=ItemWorkedOn, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" />
-        <TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" />
+        <TextBlock Grid.Row="1" Text="{Binding Path=Log, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0"/>
+        <TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
       </Grid>
     </Grid>
     <!-- Button Area-->

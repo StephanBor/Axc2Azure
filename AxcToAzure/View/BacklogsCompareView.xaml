@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:vm="clr-namespace:AxcToAzure.ViewModel" 
+                         xmlns:vm="clr-namespace:AxcToAzure.ViewModel" 
              xmlns:m="clr-namespace:AxcToAzure.Model" 
              d:DataContext="{d:DesignInstance vm:BacklogsCompareViewModel, IsDesignTimeCreatable=False}"
              xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
@@ -13,16 +13,42 @@
              d:DesignHeight="450" d:DesignWidth="800" FontSize="20" >
   <UserControl.Resources>
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    <converter:InvBoolToVisibilityConverter x:Key="InvBoolToVisibilityConverter"/>
     <utilities:BindingProxy x:Key="Proxy" Data="{Binding}"/>
   </UserControl.Resources>
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="13*" />
+      <RowDefinition Height="12*" />
+      <RowDefinition Height="2*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
-    <TextBlock Grid.Row="0" Text="Please select which items should be processed" />
     <!--Work Area -->
+    <Grid Grid.Row="0">
+      
+    </Grid>
+    <!--Loading Area-->
+    <Grid Grid.Row="1" >
+      <Grid.RowDefinitions>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding BacklogInReading,  Converter={StaticResource BoolToVisibilityConverter}}"/>
+      <TextBlock Grid.Row="1" Text="{Binding Path=Log, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding ShowProgress,  Converter={StaticResource BoolToVisibilityConverter}}" />
+      <!--TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" /-->
+    </Grid>
+    <!-- Button Area-->
+    <Grid Grid.Row="2">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="2*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="2*"/>
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="2" Content="Read Backlogs" Background="LightGreen" FontSize="26" Command="{Binding ReadBacklogsCommand}" />
+      <Button Grid.Column="4" Content="Continue" Background="Green" FontSize="26" Command="{Binding ContinueCommand}" Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
+    </Grid>
   </Grid>
 </UserControl>

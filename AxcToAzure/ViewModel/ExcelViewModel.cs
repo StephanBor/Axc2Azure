@@ -52,7 +52,7 @@ namespace AxcToAzure.ViewModel
     public string NumberColumn
     {
       get { return Get<string>(); }
-      set { Set(value.ToUpper().Trim()); CheckColumnsValue();  }
+      set { Set(value.ToUpper().Trim()); CheckColumnsValue(); }
     }
     public string DescriptionColumn
     {
@@ -67,7 +67,7 @@ namespace AxcToAzure.ViewModel
     public int DefaultEmployee
     {
       get { return Get<int>(); }
-      set {  Set(value); }
+      set { Set(value); }
 
     }
     public bool FileLoaded
@@ -85,7 +85,7 @@ namespace AxcToAzure.ViewModel
       get { return Get<bool>(); }
       set { Set(value); }
     }
-    public string ItemWorkedOn
+    public string Log
     {
       get { return Get<string>(); }
       set { Set(value); }
@@ -119,7 +119,7 @@ namespace AxcToAzure.ViewModel
       ExcelViewVisible = true;
       FileLoaded = false;
       SheetSelected = false;
-      ColumnsSet = false; 
+      ColumnsSet = false;
       FileInReading = false;
       CanContinue = false;
       DescriptionColumn = "";
@@ -137,7 +137,7 @@ namespace AxcToAzure.ViewModel
     {
       Working.Invoke(this, true);
       WorksheetName = "";
-      WorksheetNames =  new ObservableCollection<string>();
+      WorksheetNames = new ObservableCollection<string>();
       SheetSelected = false;
       CanContinue = false;
 
@@ -146,11 +146,11 @@ namespace AxcToAzure.ViewModel
       for (int i = 1; i <= workBook.Worksheets.Count; i++)
       {
 
-      WorksheetNames.Add( ((Worksheet)workBook.Worksheets[i]).Name);
+        WorksheetNames.Add(((Worksheet)workBook.Worksheets[i]).Name);
       }
-     
+
       FileLoaded = true;
-      Working.Invoke(this, false) ;
+      Working.Invoke(this, false);
     }
     /// <summary>
     /// Prüft ob beide Columns angegeben sind und ob deren Werte eine brauchbare Excel Spalte haben (von A - ZZ)
@@ -158,17 +158,17 @@ namespace AxcToAzure.ViewModel
     public void CheckColumnsValue()
     {
       CanContinue = false;
-      Regex rx = new Regex(@"\A[A-Z]{1,2}\Z"); 
+      Regex rx = new Regex(@"\A[A-Z]{1,2}\Z");
       if (NumberColumn == null || DescriptionColumn == null) return;
-      if ( EmployeeColumn == null || EmployeeColumn =="")
+      if (EmployeeColumn == null || EmployeeColumn == "")
       {
         bool IsMatch = (DescriptionColumn == NumberColumn);
         ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && !IsMatch);
       }
       else
       {
-      bool IsMatch = (DescriptionColumn == NumberColumn) || (DescriptionColumn == EmployeeColumn) || (EmployeeColumn == NumberColumn);
-          ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && rx.IsMatch(EmployeeColumn) && !IsMatch);
+        bool IsMatch = (DescriptionColumn == NumberColumn) || (DescriptionColumn == EmployeeColumn) || (EmployeeColumn == NumberColumn);
+        ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && rx.IsMatch(EmployeeColumn) && !IsMatch);
       }
     }
     /// <summary>
@@ -183,7 +183,7 @@ namespace AxcToAzure.ViewModel
       try
       {
         // Holt sich das richtige Arbeitsblatt
-        Excel.Worksheet ws = (Worksheet)workBook.Worksheets[WorksheetName];  
+        Excel.Worksheet ws = (Worksheet)workBook.Worksheets[WorksheetName];
         // Holt sich die Anzahl der Zeilen
         int rows = ws.UsedRange.Rows.Count;
         // Blueprint für die Benennung anlegen
@@ -192,22 +192,22 @@ namespace AxcToAzure.ViewModel
         Regex storyReg = new Regex(@"^\d+\.\d+\.\d+\Z");
         Regex taskReg = new Regex(@"^\d+\.\d+\.\d+\.\d+\Z");
         Regex employeeReg = new Regex(@"^[A-Z][a-z]+\,[A-Z][a-z]+(\;[A-Z][a-z]+\,[A-Z][a-z]+)*\Z");
-        ItemWorkedOn = "";
+        Log = "";
         BarProgress = 0;
         //Sortierschleife
         for (int i = 1; i <= rows; i++)
         {
-          string objectId = ws.Range[(NumberColumn+i).ToString()].Text.ToString();
-          double progress = i *100/ (rows+1);
+          string objectId = ws.Range[(NumberColumn + i).ToString()].Text.ToString();
+          double progress = i * 100 / (rows + 1);
           if (i != rows)
           {
-            ItemWorkedOn = "Reading: "+objectId + " (" + (progress) + " %)";
+            Log = progress + " % Reading: " + objectId;
             BarProgress = progress;
           }
           else
           {
             BarProgress = 99;
-            ItemWorkedOn = "Setting Children for Data...";
+            Log = "Setting Children for Data...";
 
           }
           string objectName = ws.Range[(DescriptionColumn + i).ToString()].Text.ToString();
@@ -237,18 +237,19 @@ namespace AxcToAzure.ViewModel
         }
         SetItemChildren();
         BarProgress = 100;
-        ItemWorkedOn = "Finished";
-        
+        Log = "Finished";
+
       }
-      catch (Exception ex) {
-        ItemWorkedOn = "Error";
-        BarProgress = 0; 
-        MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error); 
+      catch (Exception ex)
+      {
+        Log = "Error";
+        BarProgress = 0;
+        MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
       }
       FileInReading = false;
-      CanContinue = (ItemWorkedOn != "Error");
+      CanContinue = (Log != "Error");
     }
-    
+
     public DataItem CreateDataItem(string testId, string name, string employee, string type)
     {
       DataItem dataItem = new DataItem();
@@ -266,12 +267,12 @@ namespace AxcToAzure.ViewModel
     }
     public void SetItemChildren()
     {
-      
+
       foreach (var item in DataItems)
       {
-        if(item.Type != "Task")
+        if (item.Type != "Task")
         {
-          
+
           foreach (var child in DataItems)
           {
             if (child.Type != "Epic" && item.Id == child.ParentId)
@@ -326,21 +327,26 @@ namespace AxcToAzure.ViewModel
         t.Start();
       }
     }
-    private void ChangeDefaultEmployee (string inc)
+    private void ChangeDefaultEmployee(string inc)
     {
       int x = Convert.ToInt32(inc);
-      if (FileInReading || (DefaultEmployee + x)< 1) return;
+      if (FileInReading || (DefaultEmployee + x) < 1) return;
       DefaultEmployee += x;
     }
     private void Continue()
     {
       if (!FileInReading)
       {
+        workBook.Close();
+        CanContinue = false;
+        FilePath = "";
+        FileLoaded = false;
         ChangeStep.Invoke(this, 2);
       }
     }
-      private void Exit()
+    private void Exit()
     {
+      if (workBook != null) workBook.Close();
       Environment.Exit(0);
     }
     #endregion

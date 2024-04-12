@@ -70,7 +70,6 @@ namespace AxcToAzure.ViewModel
     {
       ProgressViewVisible = false;
       FinishedSuccessfully = false;
-       
       DataWorking = false;
       BarProgress = 0;
       DataItems = new ObservableCollection<DataItem>();
@@ -148,7 +147,7 @@ namespace AxcToAzure.ViewModel
 
         }
         Log+="Start with creating " + currentItemClass+"\n";
-        if (!await ApiConnector.WorkData(dataItems, parents))
+        if (!await ApiConnector.CreateDataItems(dataItems, parents))
         {
           BarProgress = 0;
           Log += "An Error occured. Please check your Internet Connection.\n";
@@ -158,7 +157,15 @@ namespace AxcToAzure.ViewModel
 
         }
         BarProgress += 25;
-        Log += currentItemClass + " created successfully.\n";
+        if (ApiConnector.ErrorItems.Count() > 0) 
+        {
+          Log += currentItemClass + " created. Problems occured with:\n";
+          foreach (var item in ApiConnector.ErrorItems)
+          {
+            Log += item + "\n";
+          }
+        }
+        else Log += currentItemClass + " created successfully.\n";
       }
       DataWorking = false;
       FinishedSuccessfully = true;
