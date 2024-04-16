@@ -24,7 +24,7 @@ namespace xls2aturenet6.Model
     public string Url { get; set; }
     public bool Initialized { get; set; }
     public object JsonConvert { get; private set; }
-    private string basicBody = @"{
+    private string createBody = @"{
 ""updatePackage"":""[{\""id\"":0,\""rev\"":0,\""projectId\"":\""\"",\""isDirty\"":true,\""tempId\"":-1,\""fields\"":{\""1\"":\""itemName\"",\""2\"":\""New\"",\""22\"":\""New\"",employeeValue\""25\"":\""itemType\"",\""10007\"":{\""type\"":1},\""10015\"":2,itemValue\""-2\"":apiTeamId,\""-104\"":apiProjectId}itemLink}]""
 }";
     private string addedLink = @",\""links\"":{\""addedLinks\"":[{\""ID\"":parentId,\""LinkType\"":-2,\""Comment\"":\""\"",\""FldID\"":37,\""Changed Date\"":\""\\/azDate\\/\"",\""Revised Date\"":\""\\/azDate\\/\"",\""isAddedBySystem\"":true}]}";
@@ -32,7 +32,11 @@ namespace xls2aturenet6.Model
     private string getBody = @"{""contributionIds"":[""ms.vss-work-web.backlogs-hub-backlog-data-provider""],""context"":{""properties"":{""forecasting"":false,""inProgress"":true,""completedChildItems"":true,""pageSource"":{""contributionPaths"":[""VSS"",""VSS/Resources"",""q"",""knockout"",""mousetrap"",""mustache"",""react"",""react-dom"",""react-transition-group"",""jQueryUI"",""jquery"",""OfficeFabric"",""tslib"",""@uifabric"",""VSSUI"",""ContentRendering"",""ContentRendering/Resources"",""WidgetComponents"",""WidgetComponents/Resources"",""TFSUI"",""TFSUI/Resources"",""Charts"",""Charts/Resources"",""TFS"",""Notifications"",""Presentation/Scripts/marked"",""Presentation/Scripts/URI"",""Presentation/Scripts/punycode"",""Presentation/Scripts/IPv6"",""Presentation/Scripts/SecondLevelDomains"",""highcharts"",""highcharts.more"",""highcharts.accessibility"",""highcharts.heatmap"",""highcharts.funnel"",""Analytics""],""diagnostics"":{""sessionId"":"""",""activityId"":"""",""bundlingEnabled"":true,""webPlatformVersion"":""M153"",""serviceVersion"":""Dev17.M153.5 (build: unknown)""},""navigation"":{""topMostLevel"":8,""area"":"""",""currentController"":""Apps"",""currentAction"":""ContributedHub"",""commandName"":""agile.backlogs-content"",""routeId"":""ms.vss-work-web.backlogs-content-route"",""routeTemplates"":[""{project}/_backlogs/{pivot}/{teamName}/{backlogLevel}"",""{project}/_backlogs/{pivot}/{teamName}"",""{project}/_backlogs/{pivot}""],""routeValues"":{""controller"":""Apps"",""action"":""ContributedHub"",""project"":""getProjectName"",""teamName"":""getTeamName"",""pivot"":""backlog"",""viewname"":""content"",""backlogLevel"":""Epics""}},""project"":{""id"":""getProjectId"",""name"":""getProjectName""},""selectedHubGroupId"":""ms.vss-work-web.work-hub-group"",""selectedHubId"":""ms.vss-work-web.backlogs-hub"",""url"":""getUrl""},""sourcePage"":{""url"":""getUrl"",""routeId"":""ms.vss-work-web.backlogs-content-route"",""routeValues"":{""controller"":""Apps"",""action"":""ContributedHub"",""project"":""getProjectName"",""teamName"":""getTeamName"",""pivot"":""backlog"",""viewname"":""content"",""backlogLevel"":""Epics""}}}}}
 ";
     private string getUrl = "";
+    private string updateBody = @"{""updatePackage"":""[{\""id\"":azureId,\""rev\"":revision,\""projectId\"":\""scopeValue\"",\""isDirty\"":true,\""fields\"":{\""1\"":\""itemName\""employeeValue}}]""}";
+
     public List<string> ErrorItems { get; set; }
+    public List<DataItem> OnlineBacklog { get; set; }
+    private string scopeValue { get; set; }
     //public Dictionary<int, WorkProject> WorkProjects = new();
     #endregion Properties
 
@@ -88,7 +92,7 @@ namespace xls2aturenet6.Model
         var response = await result.Content.ReadAsStringAsync();
         if (!result.IsSuccessStatusCode) { throw new Exception(result.ReasonPhrase + "\n" + response); }
         var jsonResponse = JObject.Parse(response);
-        var scopeValue = jsonResponse["fps"].Value<JObject>("dataProviders").Value<string>("scopeValue");
+        scopeValue = jsonResponse["fps"].Value<JObject>("dataProviders").Value<string>("scopeValue");
         apiUrl = apiUrl.Substring(0, apiUrl.LastIndexOf("/")) + "/" + scopeValue + "/_api/_wit/nodes?__v=5";
         //Finde Projekt und Team id
         result = await BaseGetRequestAsync(apiUrl);
@@ -98,7 +102,7 @@ namespace xls2aturenet6.Model
         string teamId = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children").Where(x => x.Value<string>("name") == teamName).First().Value<string>("id");
         string projectId = jsonResponse.Value<string>("id");
         // Post Body vorbereiten
-        basicBody = basicBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
+        createBody = createBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
         getBody = getBody.Replace("getProjectName",projectName).Replace("getTeamName", teamName).Replace("getProjectId", scopeValue).Replace("getUrl",Url);
         Initialized = true;
         return true;
@@ -109,7 +113,7 @@ namespace xls2aturenet6.Model
     {
       try
       {
-  
+        OnlineBacklog = new List<DataItem>();
         string body = getBody;
         //Post Api Url bereitmachen
         string apiUrl = getUrl + "/_apis/Contribution/dataProviders/query";
@@ -123,22 +127,37 @@ namespace xls2aturenet6.Model
         var sourceIds = jsonResponse.Value<JArray>("sourceIds");
         var targetIds = jsonResponse.Value<JArray>("targetIds");
         var azureItems = jsonResponse.Value<JObject>("payload").Value<JArray>("rows");
-       
+        foreach (var azureItem in azureItems)
+        {
+        var item = new DataItem();
+        item.CreateThis = false;
+          string itemName = azureItem[1].ToString();
+        item.Id = itemName.Substring(0, itemName.IndexOf(" "));
+        item.Name = itemName.Substring(itemName.IndexOf(" ")+1);
+        item.Type = azureItem[0].ToString();
+        item.AzureId = Convert.ToInt32(azureItem[7]);
+          item.Revision = Convert.ToInt32(azureItem[9]);
+          string employee = azureItem[10].ToString();
+        item.AzureEmployee = (employee == null || employee.Trim() =="")? "" : employee;
+        item.ParentId = (item.Type == "Epic")? "" : item.Id.Substring(0, item.Id.LastIndexOf("."));
+        OnlineBacklog.Add(item);
+        }
         return true;
       }
       catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
-    public async Task<bool> CreateDataItems(List<DataItem> items, List<DataItem> parents = null)
+    public async Task<bool> CreateAndUpdateDataItems(List<DataItem> items, List<DataItem> parents = null)
     {
       try
       {
         ErrorItems.Clear();
         string body = "";
         //Post Api Url bereitmachen
-        string apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
+          string apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
         foreach (DataItem item in items)
         {
-          body = PrepareBodyForCreation(item, parents);
+          if (!item.CreateThis && !item.UpdateThis) continue;
+          body = (item.CreateThis) ? PrepareBodyForCreation(item, parents): PrepareBodyForUpdate(item);
           var result = await BasePostRequestAsync(apiUrl, body);
           var response = await result.Content.ReadAsStringAsync();
           var jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
@@ -149,7 +168,7 @@ namespace xls2aturenet6.Model
             if (Result == MessageBoxResult.Yes)
             {
               item.AzureEmployee = "";
-              body = PrepareBodyForCreation(item, parents);
+              body = (item.CreateThis) ? PrepareBodyForCreation(item, parents) : PrepareBodyForUpdate(item);
               result = await BasePostRequestAsync(apiUrl, body);
               response = await result.Content.ReadAsStringAsync();
               jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
@@ -175,10 +194,10 @@ namespace xls2aturenet6.Model
     }
     public string PrepareBodyForCreation(DataItem item, List<DataItem> parents)
     {
-      string body = basicBody;
+      string body = createBody;
       body = body.Replace("itemType", item.Type);
       body = body.Replace("itemName", item.Id + " "+ item.Name);
-      body = body.Replace("employeeValue", item.AzureEmployee);
+      body = body.Replace("employeeValue", item.AzureEmployee =="" ? "" : @"\""24\"":\""" +item.AzureEmployee);
       if (parents != null)
       {
         body = body.Replace("itemLink", addedLink);
@@ -190,6 +209,10 @@ namespace xls2aturenet6.Model
       if (item.Type == "Task") body = body.Replace("itemValue", "");
       else body = body.Replace("itemValue", itemValue);
       return body;
+    }
+    public string PrepareBodyForUpdate(DataItem item)
+    {
+      return updateBody.Replace("employeeValue", item.AzureEmployee == "" ? @", \""24\"": null" : @", \""24\"":\""" + item.AzureEmployee+ @"\""").Replace("itemName", item.Id + " " + item.Name).Replace("azureId", item.AzureId.ToString()).Replace("scopeValue", scopeValue).Replace("revision", item.Revision.ToString());
     }
     public async Task<HttpResponseMessage> BasePostRequestAsync(string apiUrl, string jsonRequestBody)
     {

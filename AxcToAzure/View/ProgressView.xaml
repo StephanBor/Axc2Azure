@@ -41,7 +41,7 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}" Visibility="{Binding FinishedSuccessfully, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
       <Button Grid.Column="2" Content="Exit" Background="Orange" FontSize="26" Command="{Binding ExitCommand}"/>
       <Button Grid.Column="4" Content="Start" Background="Green" FontSize="26" Command="{Binding StartCommand}" Visibility="{Binding FinishedSuccessfully, Converter={StaticResource InvBoolToVisibilityConverter}}"/>
     </Grid>

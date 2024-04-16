@@ -24,9 +24,41 @@
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
     <!--Work Area -->
-    <Grid Grid.Row="0">
-      
-    </Grid>
+    <ListBox Grid.Row="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="26" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ItemsToCompare}" >
+      <ListBox.ItemTemplate>
+        <DataTemplate>
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+              
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="5*"/>
+              <ColumnDefinition Width="2*"/>
+              <ColumnDefinition Width="3*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock TextTrimming="WordEllipsis" Grid.Column="0">
+              <TextBlock.Text>
+                <MultiBinding StringFormat="{}{0} {1}">
+                  <Binding Path="Id" />
+                  <Binding Path="Name" />
+                </MultiBinding>
+              </TextBlock.Text>
+            </TextBlock>
+              <DockPanel HorizontalAlignment="Right" Grid.Column="2">
+              <CheckBox IsChecked="{Binding UpdateThis}" VerticalAlignment="Center" />
+                <TextBlock Text="Update?"/>
+              </DockPanel>
+            </Grid>
+            <TextBlock Grid.Row="1" Text="{Binding UpdateReason}" TextTrimming="WordEllipsis"/>
+
+          </Grid>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
     <!--Loading Area-->
     <Grid Grid.Row="1" >
       <Grid.RowDefinitions>

@@ -20,6 +20,12 @@ namespace AxcToAzure.Model
       get { return Get<bool>(); }
       set { Set(value); }
     }
+    public bool UpdateThis
+    {
+      get { return Get<bool>(); }
+      set { Set(value); }
+    }
+    public string UpdateReason { get; set; }
     public string Employee { get; set; }
     public string DefaultTask { get; set; }
     public ObservableCollection<DataItem> Children { get; set; }
@@ -28,10 +34,12 @@ namespace AxcToAzure.Model
     public int AzureId { get; set; }
     public string AzureDate { get; set; }
     public string AzureEmployee{get; set;}
+    public int Revision { get; set; }
     public DataItem() {
     Children = new ObservableCollection<DataItem>();
       AzureEmployee = "";
       CreateThis = true;
+      UpdateThis = false;
     }
     
   }

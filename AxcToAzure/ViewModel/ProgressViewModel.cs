@@ -86,7 +86,6 @@ namespace AxcToAzure.ViewModel
       tasks = new List<DataItem>();
       foreach(var item in DataItems)
       {
-        if (!item.CreateThis) continue;
         switch (item.Type)
         {
           case "Epic": 
@@ -147,7 +146,7 @@ namespace AxcToAzure.ViewModel
 
         }
         Log+="Start with creating " + currentItemClass+"\n";
-        if (!await ApiConnector.CreateDataItems(dataItems, parents))
+        if (!await ApiConnector.CreateAndUpdateDataItems(dataItems, parents))
         {
           BarProgress = 0;
           Log += "An Error occured. Please check your Internet Connection.\n";

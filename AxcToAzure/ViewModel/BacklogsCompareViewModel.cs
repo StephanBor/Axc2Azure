@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -55,7 +56,7 @@ namespace AxcToAzure.ViewModel
       get { return Get<ObservableCollection<DataItem>>(); }
       set { Set(value); }
     }
-    public ObservableCollection<DataItem> AzureDataItems
+    public ObservableCollection<DataItem> ItemsToCompare
     {
       get { return Get<ObservableCollection<DataItem>>(); }
       set { Set(value); }
@@ -78,7 +79,7 @@ namespace AxcToAzure.ViewModel
       BacklogInReading = false;
       ShowProgress = false;
       DataItems = new ObservableCollection<DataItem>();
-      AzureDataItems = new ObservableCollection<DataItem>();
+      ItemsToCompare = new ObservableCollection<DataItem>();
       CreateCommands();
     }
     #endregion
@@ -87,6 +88,7 @@ namespace AxcToAzure.ViewModel
     {
       Log = "";
       BarProgress = 0;
+      CanContinue = false;
       BacklogInReading = true;
       ShowProgress = true;
       if (!ApiConnector.Initialized)
@@ -111,13 +113,48 @@ namespace AxcToAzure.ViewModel
       }
       BarProgress = 75;
       Log = "Backlog successfully read. Comparing Data..";
-
+      CompareItemsWithBacklog(ApiConnector.OnlineBacklog);
       BarProgress = 100;
       Log = "Finished";
       BacklogInReading = false;
       CanContinue = true;
       return true;
 
+    }
+    public void CompareItemsWithBacklog(List<DataItem> OnlineBacklog)
+    {
+      foreach (var item in DataItems)
+      {
+        if (!item.CreateThis && !item.UpdateThis) continue;
+        if(item.Type != "Task") 
+        {
+          //Suche mögliche Partner
+          var partner =OnlineBacklog.Where(x=> x.Id == item.Id).FirstOrDefault();
+          //Kein partner gefunden => Item muss neu angelegt werden
+          if(partner == null)  continue;
+          //Items gleich => Mache nichts
+            item.CreateThis = false;
+          var oldEmployee = partner.AzureEmployee.Trim() == "" ? "Not set" : partner.AzureEmployee.Substring(0, partner.AzureEmployee.IndexOf("<"));
+          var newEmployee = item.AzureEmployee.Trim() == "" ? "Not set" : item.AzureEmployee.Substring(0, item.AzureEmployee.IndexOf("<"));
+          bool namesMatch = partner.Name == item.Name;
+          bool employeesMatch = oldEmployee == newEmployee;
+          if (namesMatch && employeesMatch)   continue;
+          item.UpdateThis = true;
+          item.AzureId = partner.AzureId;
+          item.Revision = partner.Revision;
+          if (!namesMatch) item.UpdateReason += $"Old Name: {partner.Name}\n";
+          if (!employeesMatch) item.UpdateReason += $"old Employee: {oldEmployee}, new Employee: {newEmployee}";
+          App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+          {
+          ItemsToCompare.Add(item);
+            
+          });
+        }
+        else
+        {
+
+        }
+      }
     }
     #endregion
     #region Commands
@@ -139,9 +176,10 @@ namespace AxcToAzure.ViewModel
     private void ReadBacklogs()
     {
       if (BacklogInReading) return;
-      
+      ItemsToCompare = new ObservableCollection<DataItem>();
       Working.Invoke(this, true);
       new Thread(() => ReadBacklogData().Wait()).Start();
+      //ReadBacklogData().Wait();
       Working.Invoke(this, false);
     }
     private void Back()

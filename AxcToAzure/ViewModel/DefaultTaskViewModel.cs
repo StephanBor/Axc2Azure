@@ -76,7 +76,7 @@ namespace AxcToAzure.ViewModel
             string[] names = employees[i].Split(",");
             string firstname = names[1].Trim();
             string lastname = names[0].Trim();
-            string axcName = @"\""24\"":\""" + firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
+            string axcName = firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
             if (i == 0) //Setze Employee für schon bestehenden task, danach kreire neue
             {
               item.AzureEmployee = axcName;
@@ -100,7 +100,7 @@ namespace AxcToAzure.ViewModel
           string[] names = employees[emplid].Split(","); 
           string firstname = names[1].Trim();
           string lastname = names[0].Trim();
-          string axcName = @"\""24\"":\"""+firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
+          string axcName = firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
           item.Employee = axcName;
           item.AzureEmployee = axcName;
         }
