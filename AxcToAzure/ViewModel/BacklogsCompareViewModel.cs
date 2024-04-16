@@ -68,7 +68,7 @@ namespace AxcToAzure.ViewModel
     }
     public EventHandler<bool> Working;
     public event EventHandler<int> ChangeStep;
-    
+
     #endregion
     #region Constructor
     public BacklogsCompareViewModel()
@@ -104,7 +104,7 @@ namespace AxcToAzure.ViewModel
       }
       BarProgress = 25;
       Log = "Trying to get existing Backlog";
-      if ( !await ApiConnector.GetExistingBacklog())
+      if (!await ApiConnector.GetExistingBacklog())
       {
         Log = "Error while Reading the Backlog";
         BarProgress = 0;
@@ -122,38 +122,64 @@ namespace AxcToAzure.ViewModel
 
     }
     public void CompareItemsWithBacklog(List<DataItem> OnlineBacklog)
-    {
+    { 
+      List<DataItem> ItemsToAddLater = new List<DataItem>();
       foreach (var item in DataItems)
       {
         if (!item.CreateThis && !item.UpdateThis) continue;
-        if(item.Type != "Task") 
+        if (item.Type != "Task")
         {
           //Suche mögliche Partner
-          var partner =OnlineBacklog.Where(x=> x.Id == item.Id).FirstOrDefault();
+          var partner = OnlineBacklog.Where(x => x.Id == item.Id).FirstOrDefault();
           //Kein partner gefunden => Item muss neu angelegt werden
-          if(partner == null)  continue;
+          if (partner == null) continue;
           //Items gleich => Mache nichts
-            item.CreateThis = false;
-          var oldEmployee = partner.AzureEmployee.Trim() == "" ? "Not set" : partner.AzureEmployee.Substring(0, partner.AzureEmployee.IndexOf("<"));
-          var newEmployee = item.AzureEmployee.Trim() == "" ? "Not set" : item.AzureEmployee.Substring(0, item.AzureEmployee.IndexOf("<"));
+          item.CreateThis = false;
+
           bool namesMatch = partner.Name == item.Name;
-          bool employeesMatch = oldEmployee == newEmployee;
-          if (namesMatch && employeesMatch)   continue;
+
+          if (namesMatch) continue;
           item.UpdateThis = true;
           item.AzureId = partner.AzureId;
           item.Revision = partner.Revision;
-          if (!namesMatch) item.UpdateReason += $"Old Name: {partner.Name}\n";
-          if (!employeesMatch) item.UpdateReason += $"old Employee: {oldEmployee}, new Employee: {newEmployee}";
-          App.Current.Dispatcher.Invoke((Action)delegate // <--- HERE
+          item.UpdateReason = $"Name in Backlog: {partner.Name}";
+          App.Current.Dispatcher.Invoke((Action)delegate
           {
-          ItemsToCompare.Add(item);
-            
+            ItemsToCompare.Add(item);
+
           });
         }
         else
         {
+          var onlineItems = OnlineBacklog.Where(x => x.Id == item.Id && x.Name != item.Name);
+          var offlineItems = DataItems.Where(x => x.Id == item.Id);
+          //Kein partner gefunden =>Mache nichts
+          if (!onlineItems.Any() || !item.CreateThis) continue;
+          //deactivate all corresponding tasks
+          foreach (var offlineitem in offlineItems)
+          {
+            offlineitem.CreateThis = false;
+            offlineitem.UpdateThis = false;
+
+          }
+          foreach (var onlineitem in onlineItems)
+          {
+            
+            onlineitem.UpdateReason = $"Name in Backlog: {onlineitem.Name}";
+            onlineitem.Name = item.Name;
+            ItemsToAddLater.Add(onlineitem); 
+          }
 
         }
+      }
+      foreach ( var item in  ItemsToAddLater)
+      {
+        DataItems.Add(item);
+        App.Current.Dispatcher.Invoke((Action)delegate
+        {
+          ItemsToCompare.Add(item);
+
+        });
       }
     }
     #endregion
@@ -186,7 +212,7 @@ namespace AxcToAzure.ViewModel
     {
       if (BacklogInReading) return;
       CompareBacklogs = false;
-     ChangeStep(this, 4);
+      ChangeStep(this, 4);
     }
     #endregion
   }

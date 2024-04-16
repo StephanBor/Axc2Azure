@@ -32,7 +32,7 @@ namespace xls2aturenet6.Model
     private string getBody = @"{""contributionIds"":[""ms.vss-work-web.backlogs-hub-backlog-data-provider""],""context"":{""properties"":{""forecasting"":false,""inProgress"":true,""completedChildItems"":true,""pageSource"":{""contributionPaths"":[""VSS"",""VSS/Resources"",""q"",""knockout"",""mousetrap"",""mustache"",""react"",""react-dom"",""react-transition-group"",""jQueryUI"",""jquery"",""OfficeFabric"",""tslib"",""@uifabric"",""VSSUI"",""ContentRendering"",""ContentRendering/Resources"",""WidgetComponents"",""WidgetComponents/Resources"",""TFSUI"",""TFSUI/Resources"",""Charts"",""Charts/Resources"",""TFS"",""Notifications"",""Presentation/Scripts/marked"",""Presentation/Scripts/URI"",""Presentation/Scripts/punycode"",""Presentation/Scripts/IPv6"",""Presentation/Scripts/SecondLevelDomains"",""highcharts"",""highcharts.more"",""highcharts.accessibility"",""highcharts.heatmap"",""highcharts.funnel"",""Analytics""],""diagnostics"":{""sessionId"":"""",""activityId"":"""",""bundlingEnabled"":true,""webPlatformVersion"":""M153"",""serviceVersion"":""Dev17.M153.5 (build: unknown)""},""navigation"":{""topMostLevel"":8,""area"":"""",""currentController"":""Apps"",""currentAction"":""ContributedHub"",""commandName"":""agile.backlogs-content"",""routeId"":""ms.vss-work-web.backlogs-content-route"",""routeTemplates"":[""{project}/_backlogs/{pivot}/{teamName}/{backlogLevel}"",""{project}/_backlogs/{pivot}/{teamName}"",""{project}/_backlogs/{pivot}""],""routeValues"":{""controller"":""Apps"",""action"":""ContributedHub"",""project"":""getProjectName"",""teamName"":""getTeamName"",""pivot"":""backlog"",""viewname"":""content"",""backlogLevel"":""Epics""}},""project"":{""id"":""getProjectId"",""name"":""getProjectName""},""selectedHubGroupId"":""ms.vss-work-web.work-hub-group"",""selectedHubId"":""ms.vss-work-web.backlogs-hub"",""url"":""getUrl""},""sourcePage"":{""url"":""getUrl"",""routeId"":""ms.vss-work-web.backlogs-content-route"",""routeValues"":{""controller"":""Apps"",""action"":""ContributedHub"",""project"":""getProjectName"",""teamName"":""getTeamName"",""pivot"":""backlog"",""viewname"":""content"",""backlogLevel"":""Epics""}}}}}
 ";
     private string getUrl = "";
-    private string updateBody = @"{""updatePackage"":""[{\""id\"":azureId,\""rev\"":revision,\""projectId\"":\""scopeValue\"",\""isDirty\"":true,\""fields\"":{\""1\"":\""itemName\""employeeValue}}]""}";
+    private string updateBody = @"{""updatePackage"":""[{\""id\"":azureId,\""rev\"":revision,\""projectId\"":\""scopeValue\"",\""isDirty\"":true,\""fields\"":{\""1\"":\""itemName\""}}]""}";
 
     public List<string> ErrorItems { get; set; }
     public List<DataItem> OnlineBacklog { get; set; }
@@ -131,14 +131,13 @@ namespace xls2aturenet6.Model
         {
         var item = new DataItem();
         item.CreateThis = false;
+          item.UpdateThis = true;
           string itemName = azureItem[1].ToString();
         item.Id = itemName.Substring(0, itemName.IndexOf(" "));
         item.Name = itemName.Substring(itemName.IndexOf(" ")+1);
         item.Type = azureItem[0].ToString();
         item.AzureId = Convert.ToInt32(azureItem[7]);
           item.Revision = Convert.ToInt32(azureItem[9]);
-          string employee = azureItem[10].ToString();
-        item.AzureEmployee = (employee == null || employee.Trim() =="")? "" : employee;
         item.ParentId = (item.Type == "Epic")? "" : item.Id.Substring(0, item.Id.LastIndexOf("."));
         OnlineBacklog.Add(item);
         }
@@ -212,7 +211,7 @@ namespace xls2aturenet6.Model
     }
     public string PrepareBodyForUpdate(DataItem item)
     {
-      return updateBody.Replace("employeeValue", item.AzureEmployee == "" ? @", \""24\"": null" : @", \""24\"":\""" + item.AzureEmployee+ @"\""").Replace("itemName", item.Id + " " + item.Name).Replace("azureId", item.AzureId.ToString()).Replace("scopeValue", scopeValue).Replace("revision", item.Revision.ToString());
+      return updateBody.Replace("itemName", item.Id + " " + item.Name).Replace("azureId", item.AzureId.ToString()).Replace("scopeValue", scopeValue).Replace("revision", item.Revision.ToString());
     }
     public async Task<HttpResponseMessage> BasePostRequestAsync(string apiUrl, string jsonRequestBody)
     {
