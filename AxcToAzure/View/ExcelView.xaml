@@ -15,124 +15,132 @@
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="*"/>
       <RowDefinition Height="6*" />
-      <RowDefinition Height="5*" />
+      <RowDefinition Height="3*" />
       <RowDefinition Height="3*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
+    <!--Caption-->
+    <TextBlock Grid.Row="0"  Text="Excel Input" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <!--Work Area -->
-    <Grid Grid.Row="0">
 
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="3*"/>
-        <ColumnDefinition Width="3*"/>
-      </Grid.ColumnDefinitions>
-      <!-- Descritpion-->
-      <Grid Grid.Column="0">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <TextBlock Grid.Row ="0" ToolTip="Click on the three dots, then select your Excel File" Text="Path to the Excel-File (.xlsx):"  Margin="2.5,2.5,0,2.5"/>
-        <TextBlock Grid.Row ="1" ToolTip="Select which worksheet contains the informations." Text="Name of the Worksheet:" Margin="2.5,2.5,0,2.5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="2" ToolTip="Set which column contains the Description of the Items." Text="Column for Itemdescriptions:  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="3" ToolTip="Set which column contains the Projectnumber of the Items." Text="Column for Itemnumbers: " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="4" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" Text="Column for Employees assigned (optional):  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        <TextBlock Grid.Row ="5" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." Text="Default Employee (if more than 1): " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-      </Grid>
-      <!-- Input-->
-      <Grid Grid.Column="1">
-        <Grid.RowDefinitions>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="1*"/>
-          <RowDefinition Height="3*"/>
-          
-          <RowDefinition Height="1*"/>
-        </Grid.RowDefinitions>
-        <Border Grid.Row ="0" BorderThickness="1" BorderBrush="Black" Margin="5">
-          <Grid >
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="20*"/>
-              <ColumnDefinition Width=" *"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Column="0"  Text="{Binding FilePath}" Margin="3,0,0,0"/>
-            <Button Grid.Column="1"  VerticalContentAlignment="Center" Command="{Binding SelectFileCommand}" FontSize="18" Content="..."/>
-          </Grid>
-        </Border>
-        <ComboBox Grid.Row="1" ItemsSource="{Binding Path=WorksheetNames}"  SelectedValue="{Binding Path=WorksheetName}" Margin="5,2,2,5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
-        <Grid Grid.Row="2"  Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+      <Grid Grid.Row="2" Margin="3">
+
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*"/>
+          <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Descritpion-->
+        <Grid Grid.Column="0">
           <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
           </Grid.RowDefinitions>
-        <TextBox Grid.Row="0" x:Name="Textbox1" Text="{Binding DescriptionColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-          <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="A,B,C,..,ZZ" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
-            <TextBlock.Style>
-              <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="Visibility" Value="Collapsed"/>
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding Text, ElementName=Textbox1}" Value="">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
-            </TextBlock.Style>
-          </TextBlock>
-          <TextBox Grid.Row="1" x:Name="Textbox2" Text="{Binding NumberColumn, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5"  />
-          <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="A,B,C,..,ZZ" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
-          <TextBlock.Style>
-            <Style TargetType="{x:Type TextBlock}">
-              <Setter Property="Visibility" Value="Collapsed"/>
-              <Style.Triggers>
-                <DataTrigger Binding="{Binding Text, ElementName=Textbox2}" Value="">
-                  <Setter Property="Visibility" Value="Visible"/>
-                </DataTrigger>
-              </Style.Triggers>
-            </Style>
-          </TextBlock.Style>
-        </TextBlock>
-          <TextBox Grid.Row="2" x:Name="Textbox3" Text="{Binding EmployeeColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-          <TextBlock Grid.Row="2" IsHitTestVisible="False" TextWrapping="Wrap" Text="A,B,C,..,ZZ" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
-            <TextBlock.Style>
-              <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="Visibility" Value="Collapsed"/>
-                <Style.Triggers>
-                  <DataTrigger Binding="{Binding Text, ElementName=Textbox3}" Value="">
-                    <Setter Property="Visibility" Value="Visible"/>
-                  </DataTrigger>
-                </Style.Triggers>
-              </Style>
-            </TextBlock.Style>
-          </TextBlock>
+          <TextBlock Grid.Row ="0" ToolTip="Click on the three dots, then select your Excel File" Text="Path to the Excel-File (.xlsx):"  Margin="2.5,2.5,0,2.5"/>
+          <TextBlock Grid.Row ="1" ToolTip="Select which worksheet contains the informations." Text="Name of the Worksheet:" Margin="2.5,2.5,0,2.5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+          <TextBlock Grid.Row ="2" ToolTip="Set which column contains the Description of the Items." Text="Column for Itemdescriptions:  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+          <TextBlock Grid.Row ="3" ToolTip="Set which column contains the Projectnumber of the Items." Text="Column for Itemnumbers: " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+          <TextBlock Grid.Row ="4" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" Text="Column for Employees assigned (optional):  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
+          <TextBlock Grid.Row ="5" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." Text="Default Employee (if more than 1): " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
         </Grid>
-        <Grid Grid.Row="3" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" >
-          <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="8*"/>
-            <ColumnDefinition Width=" *"/>
-            <ColumnDefinition Width=" *"/>
-          </Grid.ColumnDefinitions>
-          <TextBlock  Grid.Column="0" Text="{Binding DefaultEmployee}" Margin="5" />
-          <Button Grid.Column="1"  VerticalContentAlignment="Center" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="-1" FontSize="18" Content="-"/>
-          <Button Grid.Column="2"  VerticalContentAlignment="Center" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="1" FontSize="18" Content="+"/>
+        <!-- Input-->
+        <Grid Grid.Column="1">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+
+            <RowDefinition Height="1*"/>
+          </Grid.RowDefinitions>
+          <Border Grid.Row ="0" BorderThickness="1" BorderBrush="Black" Margin="5">
+            <Grid >
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20*"/>
+                <ColumnDefinition Width=" *"/>
+              </Grid.ColumnDefinitions>
+              <TextBlock Grid.Column="0" VerticalAlignment="Center" FontSize="20" Text="{Binding FilePath}" Margin="3,0,0,0"/>
+              <Button Grid.Column="1"  VerticalContentAlignment="Center" Command="{Binding SelectFileCommand}" FontSize="18" Content="..."/>
+            </Grid>
+          </Border>
+        <ComboBox Grid.Row="1" VerticalContentAlignment="Center" FontSize="18" ItemsSource="{Binding Path=WorksheetNames}"  SelectedValue="{Binding Path=WorksheetName}" Margin="5,2,2,5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+          <Grid Grid.Row="2"  Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="1*"/>
+              <RowDefinition Height="1*"/>
+              <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+          <TextBox Grid.Row="0" VerticalContentAlignment="Center" x:Name="Textbox1" Text="{Binding DescriptionColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+            <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. B" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=Textbox1}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          <TextBox Grid.Row="1" VerticalContentAlignment="Center" x:Name="Textbox2" Text="{Binding NumberColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5"  />
+            <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. D" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=Textbox2}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          <TextBox Grid.Row="2" VerticalContentAlignment="Center" x:Name="Textbox3" Text="{Binding EmployeeColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+            <TextBlock Grid.Row="2" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. C" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+              <TextBlock.Style>
+                <Style TargetType="{x:Type TextBlock}">
+                  <Setter Property="Visibility" Value="Collapsed"/>
+                  <Style.Triggers>
+                    <DataTrigger Binding="{Binding Text, ElementName=Textbox3}" Value="">
+                      <Setter Property="Visibility" Value="Visible"/>
+                    </DataTrigger>
+                  </Style.Triggers>
+                </Style>
+              </TextBlock.Style>
+            </TextBlock>
+          </Grid>
+          <Grid Grid.Row="3" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" >
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="8*"/>
+              <ColumnDefinition Width=" *"/>
+              <ColumnDefinition Width=" *"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock  Grid.Column="0" Text="{Binding DefaultEmployee}" Margin="5" />
+            <Button Grid.Column="1"  VerticalContentAlignment="Center" Margin="0,0,5,0" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="-1" FontSize="22" Content="-"/>
+            <Button Grid.Column="2"  VerticalContentAlignment="Center" Margin="0,0,5,0" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="1" FontSize="22" Content="+"/>
+          </Grid>
+
         </Grid>
-       
       </Grid>
-    </Grid>
+
+
     <!-- Loading Area-->
-    <Grid Grid.Row="2">
+    <Grid Grid.Row="4">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="2*"/>
 
       </Grid.RowDefinitions>
-      <DockPanel Grid.Row="0">
-        <Button Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}" VerticalAlignment="Center"/>
+      <DockPanel Grid.Row="0" Margin="3,0,0,0">
+        <Button Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}"  VerticalAlignment="Center"/>
         <TextBlock VerticalAlignment="Center" Text="How to export the Report from Axc" Margin="3,0,0,0"/>
       </DockPanel>
       <Grid Grid.Row="1" >
@@ -146,7 +154,7 @@
       </Grid>
     </Grid>
     <!-- Button Area-->
-    <Grid Grid.Row="3">
+    <Grid Grid.Row="5">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="*"/>

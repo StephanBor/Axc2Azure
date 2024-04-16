@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance vm:MainWindowViewModel, IsDesignTimeCreatable=False}"
         xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200">
+        Title="Axc2Azure" Height="800" Width="1200">
   <Window.Resources>
     <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
   </Window.Resources>
@@ -23,7 +23,10 @@
       <RowDefinition Height="15*"/>
       <RowDefinition Height="2*"/>
     </Grid.RowDefinitions>
-    <Image Grid.Column="2" Grid.Row="0" Source="pack://application:,,,/Styles/logo.jpg"/>
+    <Grid Grid.Column="2" Grid.Row="0"  Background="White">
+    <Image Source="pack://application:,,,/Styles/logo.jpg" Margin="5"/>
+      
+    </Grid>
     <local:ExcelView DataContext="{Binding ExcelViewModel}" Grid.Column="1" Grid.Row="1"  Visibility="{Binding ExcelViewVisible, Converter={StaticResource BoolToVisibilityConverter}}" />
     <local:ItemSelectView DataContext="{Binding ItemSelectViewModel}" Grid.Column="1" Grid.Row="1" Visibility="{Binding ItemSelectViewVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
     <local:DefaultTaskView DataContext="{Binding DefaultTaskViewModel}" Grid.Column="1" Grid.Row="1" Visibility="{Binding DefaultTaskViewVisible, Converter={StaticResource BoolToVisibilityConverter}}" />

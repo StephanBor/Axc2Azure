@@ -148,6 +148,12 @@ namespace AxcToAzure.ViewModel
 
         WorksheetNames.Add(((Worksheet)workBook.Worksheets[i]).Name);
       }
+      var sheet = WorksheetNames.Where(x => x.Trim() == "ProjectReport"|| x.Trim() == "Project Report").FirstOrDefault(); 
+      if( sheet != null)
+      {
+        WorksheetName = sheet;
+        SheetSelected = true;
+      }
 
       FileLoaded = true;
       Working.Invoke(this, false);
