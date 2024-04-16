@@ -43,13 +43,43 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
           </Grid.RowDefinitions>
-          <TextBlock Grid.Row ="0" ToolTip="Click on the three dots, then select your Excel File" Text="Path to the Excel-File (.xlsx):"  Margin="2.5,2.5,0,2.5"/>
-          <TextBlock Grid.Row ="1" ToolTip="Select which worksheet contains the informations." Text="Name of the Worksheet:" Margin="2.5,2.5,0,2.5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
-          <TextBlock Grid.Row ="2" ToolTip="Set which column contains the Description of the Items." Text="Column for Itemdescriptions:  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-          <TextBlock Grid.Row ="3" ToolTip="Set which column contains the Projectnumber of the Items." Text="Column for Itemnumbers: " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-          <TextBlock Grid.Row ="4" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" Text="Column for Employees assigned (optional):  " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-          <TextBlock Grid.Row ="5" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." Text="Default Employee (if more than 1): " Margin="2.5,2.5,0,2.5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}"/>
-        </Grid>
+        <DockPanel Grid.Row="0" Margin="5,2.5,15,2.5">
+          <TextBlock Text="Path to the Excel-File (.xlsx):"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Click on the three dots, then select your Excel File" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+            <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+        </DockPanel>
+        <DockPanel Grid.Row="1" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}} " Margin="5,2.5,15,2.5">
+          <TextBlock  Text="Name of the Worksheet:"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Select which worksheet contains the informations." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+            <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+          </Border>
+        </DockPanel>
+        <DockPanel Grid.Row="2" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
+          <TextBlock   Text="Column for Itemdescriptions:  "  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the Description of the Items." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        </DockPanel>
+        <DockPanel Grid.Row="3" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
+          <TextBlock Text="Column for Itemnumbers: "  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the Projectnumber of the Items." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        </DockPanel>
+        <DockPanel Grid.Row="4" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
+          <TextBlock   Text="Column for Employees assigned (optional):  "  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        </DockPanel>
+        <DockPanel Grid.Row="5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
+          <TextBlock  Text="Default Employee (if more than 1): "  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." CornerRadius="30" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
+        </Border>
+        </DockPanel>
+      </Grid>
         <!-- Input-->
         <Grid Grid.Column="1">
           <Grid.RowDefinitions>
@@ -69,7 +99,7 @@
               <Button Grid.Column="1"  VerticalContentAlignment="Center" Command="{Binding SelectFileCommand}" FontSize="18" Content="..."/>
             </Grid>
           </Border>
-        <ComboBox Grid.Row="1" VerticalContentAlignment="Center" FontSize="18" ItemsSource="{Binding Path=WorksheetNames}"  SelectedValue="{Binding Path=WorksheetName}" Margin="5,2,2,5" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <ComboBox Grid.Row="1" VerticalContentAlignment="Center" FontSize="18" ItemsSource="{Binding Path=WorksheetNames}"  SelectedValue="{Binding Path=WorksheetName}" Margin="5,2,5,2" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
           <Grid Grid.Row="2"  Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.RowDefinitions>
@@ -123,7 +153,7 @@
               <ColumnDefinition Width=" *"/>
               <ColumnDefinition Width=" *"/>
             </Grid.ColumnDefinitions>
-            <TextBlock  Grid.Column="0" Text="{Binding DefaultEmployee}" Margin="5" />
+            <TextBlock VerticalAlignment="Center" Grid.Column="0" Text="{Binding DefaultEmployee}" Margin="5" />
             <Button Grid.Column="1"  VerticalContentAlignment="Center" Margin="0,0,5,0" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="-1" FontSize="22" Content="-"/>
             <Button Grid.Column="2"  VerticalContentAlignment="Center" Margin="0,0,5,0" Command="{Binding ChangeDefaultEmployeeCommand}" CommandParameter="1" FontSize="22" Content="+"/>
           </Grid>
@@ -140,7 +170,7 @@
 
       </Grid.RowDefinitions>
       <DockPanel Grid.Row="0" Margin="3,0,0,0">
-        <Button Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}"  VerticalAlignment="Center"/>
+        <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}"  VerticalAlignment="Center"/>
         <TextBlock VerticalAlignment="Center" Text="How to export the Report from Axc" Margin="3,0,0,0"/>
       </DockPanel>
       <Grid Grid.Row="1" >
@@ -148,7 +178,7 @@
           <RowDefinition Height="*"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,3,0"/>
         <TextBlock Grid.Row="1" Text="{Binding Path=Log, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0"/>
         <TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
       </Grid>
