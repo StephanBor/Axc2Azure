@@ -170,6 +170,8 @@ namespace xls2aturenet6.Model
           item.CreateThis = false;
           item.UpdateThis = true;
           string itemName = azureItem[1].ToString();
+          if(itemName.Contains(' '))
+          {
           item.Id = itemName.Substring(0, itemName.IndexOf(" "));
           item.Name = itemName.Substring(itemName.IndexOf(" ") + 1);
           item.Type = azureItem[0].ToString();
@@ -177,6 +179,7 @@ namespace xls2aturenet6.Model
           item.Revision = Convert.ToInt32(azureItem[9]);
           item.ParentId = (item.Type == "Epic") ? "" : item.Id.Substring(0, item.Id.LastIndexOf("."));
           OnlineBacklog.Add(item);
+          }
         }
         return true;
       }

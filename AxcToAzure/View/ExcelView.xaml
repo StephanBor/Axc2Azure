@@ -15,8 +15,7 @@
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*"/>
-      <RowDefinition Height="*"/>
+      <RowDefinition Height="2*"/>
       <RowDefinition Height="6*" />
       <RowDefinition Height="3*" />
       <RowDefinition Height="3*" />
@@ -27,7 +26,7 @@
     <!--Work Area -->
 
 
-      <Grid Grid.Row="2" Margin="3">
+      <Grid Grid.Row="1" Margin="3">
 
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="3*"/>
@@ -163,7 +162,7 @@
 
 
     <!-- Loading Area-->
-    <Grid Grid.Row="4">
+    <Grid Grid.Row="3">
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="2*"/>
@@ -184,7 +183,7 @@
       </Grid>
     </Grid>
     <!-- Button Area-->
-    <Grid Grid.Row="5">
+    <Grid Grid.Row="4">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="*"/>

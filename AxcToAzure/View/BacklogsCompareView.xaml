@@ -19,12 +19,15 @@
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
-      <RowDefinition Height="12*" />
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="11*" />
       <RowDefinition Height="2*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
+    <!--Caption-->
+    <TextBlock Grid.Row="0"  Text="Azure Backlog" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <!--Work Area -->
-    <ListBox Grid.Row="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="26" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ItemsToCompare}" >
+    <ListBox Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="26" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ItemsToCompare}" >
       <ListBox.ItemTemplate>
         <DataTemplate>
           <Grid>
@@ -60,7 +63,7 @@
     </ListBox>
 
     <!--Loading Area-->
-    <Grid Grid.Row="1" >
+    <Grid Grid.Row="2" >
       <Grid.RowDefinitions>
         <RowDefinition Height="*"/>
         <RowDefinition Height="*"/>
@@ -70,7 +73,7 @@
       <!--TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" /-->
     </Grid>
     <!-- Button Area-->
-    <Grid Grid.Row="2">
+    <Grid Grid.Row="3">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="*"/>

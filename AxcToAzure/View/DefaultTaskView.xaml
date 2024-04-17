@@ -18,12 +18,16 @@
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
+      <RowDefinition Height="2*" />
       <RowDefinition Height="*" />
       <RowDefinition Height="12*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
-    <TextBlock Grid.Row="0" Text="Add Default Tasks to the User-Stories" />
+    <StackPanel>
+
+      <TextBlock Grid.Row="0"  Text="Defaulttasks" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+      <TextBlock Grid.Row="0" Text="Add Default Tasks to the User-Stories" />
+    </StackPanel>
     <DockPanel Grid.Row="1">
       <Button Content="Open" VerticalAlignment="Center" Command="{Binding OpenDefaultTaskListCommand}"/>
       <TextBlock Text=" the Default Task List" VerticalAlignment="Center" Margin="2,0,50,0"/>

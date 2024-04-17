@@ -18,11 +18,16 @@
   <!--MainData -->
   <Grid Background="White">
     <Grid.RowDefinitions>
-      <RowDefinition Height="*" />
-      <RowDefinition Height="13*" />
+      <RowDefinition Height="2*" />
+      <RowDefinition Height="12*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
+    <!--Caption-->
+    <StackPanel>
+      
+    <TextBlock Grid.Row="0"  Text="Itemselection" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <TextBlock Grid.Row="0" Text="Please select which items should be processed" />
+    </StackPanel>
     <!--Work Area -->
     <TreeView Grid.Row="1" ItemsSource="{Binding Nodes}">
       <TreeView.Resources>
