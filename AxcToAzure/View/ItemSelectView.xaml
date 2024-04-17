@@ -26,7 +26,7 @@
     <StackPanel>
       
     <TextBlock Grid.Row="0"  Text="Itemselection" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
-    <TextBlock Grid.Row="0" Text="Please select which items should be processed" />
+    <TextBlock Grid.Row="0" Text="Please select which items should be processed" Margin="5,0,0,0" />
     </StackPanel>
     <!--Work Area -->
     <TreeView Grid.Row="1" ItemsSource="{Binding Nodes}">

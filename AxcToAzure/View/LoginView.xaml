@@ -41,18 +41,18 @@
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row ="0" Text="Link to the Backlog:"  Margin="2.5,2.5,0,2.5"/> 
-        <TextBlock Grid.Row ="1" Text="Username:" Margin="2.5,2.5,0,2.5" />
-        <TextBlock Grid.Row ="2" Text="Password:" Margin="2.5,2.5,0,2.5" />
+        <TextBlock Grid.Row ="0" Text="Link to the Backlog:"  Margin="5,2.5,0,2.5"/> 
+        <TextBlock Grid.Row ="1" Text="Username:" Margin="5,2.5,0,2.5" />
+        <TextBlock Grid.Row ="2" Text="Password:" Margin="5,2.5,0,2.5" />
         <DockPanel Grid.Row ="3">
-          <CheckBox VerticalAlignment="Center" IsChecked="{Binding UseProxy, UpdateSourceTrigger=PropertyChanged}" />
+          <CheckBox VerticalAlignment="Center" IsChecked="{Binding UseProxy, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" />
           <TextBlock Text="Use Proxy" Margin="2.5,2.5,0,2.5"/>
             <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Use this option only if you need a proxy to enter the Backlog." CornerRadius="30" Height="25" Width="25" Margin="2.5,2.5,0,2.5">
               <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Border>
          
         </DockPanel>
-        <TextBlock Grid.Row ="4" Text="Proxy Address:" Margin="2.5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="4" Text="Proxy Address:" Margin="5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
       </Grid>
       <!-- Input-->
       <Grid Grid.Column="1">
