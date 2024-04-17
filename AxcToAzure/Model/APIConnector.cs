@@ -77,15 +77,15 @@ namespace xls2aturenet6.Model
       {
         //Aus angegebener URL Teamnamen schneiden
         int startindex = Url.LastIndexOf("/backlog/") + 9;
-        var teamName = Url.Substring(startindex, Url.LastIndexOf("/Epics") - startindex);
-       // Cut till Projectname
-        startindex = Url.LastIndexOf("/tfs/")+5; 
+        var teamName = Url.Substring(startindex, Url.LastIndexOf("/Epics") - startindex).Replace("%20", " ");
+        // Cut till Projectname
+        startindex = Url.LastIndexOf("/tfs/") + 5;
         var shortenedUrl = Url.Substring(startindex);
-        startindex = shortenedUrl.IndexOf("/")+1;
+        startindex = shortenedUrl.IndexOf("/") + 1;
         shortenedUrl = shortenedUrl.Substring(startindex);
         int endindex = shortenedUrl.IndexOf("/");
         var projectName = shortenedUrl.Substring(0, endindex);
-        getUrl = Url.Substring(0, Url.IndexOf("/"+projectName));
+        getUrl = Url.Substring(0, Url.IndexOf("/" + projectName));
         var apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "?__rt=fps";
         //Finde scopeValue des Projekts für ApiUrl
         var result = await BaseGetRequestAsync(apiUrl);
@@ -99,15 +99,52 @@ namespace xls2aturenet6.Model
         response = await result.Content.ReadAsStringAsync();
         if (!result.IsSuccessStatusCode) { throw new Exception(result.ReasonPhrase + "\n" + response); }
         jsonResponse = JObject.Parse(response);
-        string teamId = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children").Where(x => x.Value<string>("name") == teamName).First().Value<string>("id");
-        string projectId = jsonResponse.Value<string>("id");
+        string projectId = "";
+        string teamId = "";
+        var teams = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children"); 
+        var projects = jsonResponse.Value<JArray>("children")[1].Value<JArray>("children");
+        var potentialProjectId = projects.Where(x => x.Value<string>("name") == teamName).FirstOrDefault();
+        var potentialTeamId = teams.Where(x => x.Value<string>("name") == teamName).FirstOrDefault();
+        if (potentialTeamId != null) { 
+          teamId = potentialTeamId.Value<string>("id"); 
+          projectId = (potentialProjectId != null) ? potentialProjectId.Value<string>("id"):jsonResponse.Value<string>("id");
+        }
+        else
+        {
+          teams = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children");
+          bool foundBacklog = false;
+          foreach (var potTeam in teams)
+          {
+            var potName = potTeam.Value<string>("name");
+            var Result = MessageBox.Show($"Could not detect the name of the repository. \nIs {potName} the correct name?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+            if (Result == MessageBoxResult.Yes)
+            {
+              potentialProjectId = projects.Where(x => x.Value<string>("name") == potName).FirstOrDefault();
+              projectId = (potentialProjectId != null) ? potentialProjectId.Value<string>("id") : jsonResponse.Value<string>("id");
+              teamId = potTeam.Value<string>("id");
+              foundBacklog = true;
+              break;
+
+
+            }
+          }
+          if (!foundBacklog)
+          {
+            throw new Exception("Backlog not found!");
+          }
+        }
+
+
+
+
         // Post Body vorbereiten
         createBody = createBody.Replace("apiTeamId", teamId).Replace("apiProjectId", projectId);
-        getBody = getBody.Replace("getProjectName",projectName).Replace("getTeamName", teamName).Replace("getProjectId", scopeValue).Replace("getUrl",Url);
+        getBody = getBody.Replace("getProjectName", projectName).Replace("getTeamName", teamName).Replace("getProjectId", scopeValue).Replace("getUrl", Url);
         Initialized = true;
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message,"Error" ,MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public async Task<bool> GetExistingBacklog()
     {
@@ -122,24 +159,24 @@ namespace xls2aturenet6.Model
         client.DefaultRequestHeaders.Clear();
         var response = await result.Content.ReadAsStringAsync();
         if (!result.IsSuccessStatusCode) { throw new Exception(result.ReasonPhrase + "\n" + response); }
-        var jsonResponse = JObject.Parse(response);       
+        var jsonResponse = JObject.Parse(response);
         jsonResponse = jsonResponse.Value<JObject>("data").Value<JObject>("ms.vss-work-web.backlogs-hub-backlog-data-provider").Value<JObject>("backlogPayload").Value<JObject>("queryResults");
         var sourceIds = jsonResponse.Value<JArray>("sourceIds");
         var targetIds = jsonResponse.Value<JArray>("targetIds");
         var azureItems = jsonResponse.Value<JObject>("payload").Value<JArray>("rows");
         foreach (var azureItem in azureItems)
         {
-        var item = new DataItem();
-        item.CreateThis = false;
+          var item = new DataItem();
+          item.CreateThis = false;
           item.UpdateThis = true;
           string itemName = azureItem[1].ToString();
-        item.Id = itemName.Substring(0, itemName.IndexOf(" "));
-        item.Name = itemName.Substring(itemName.IndexOf(" ")+1);
-        item.Type = azureItem[0].ToString();
-        item.AzureId = Convert.ToInt32(azureItem[7]);
+          item.Id = itemName.Substring(0, itemName.IndexOf(" "));
+          item.Name = itemName.Substring(itemName.IndexOf(" ") + 1);
+          item.Type = azureItem[0].ToString();
+          item.AzureId = Convert.ToInt32(azureItem[7]);
           item.Revision = Convert.ToInt32(azureItem[9]);
-        item.ParentId = (item.Type == "Epic")? "" : item.Id.Substring(0, item.Id.LastIndexOf("."));
-        OnlineBacklog.Add(item);
+          item.ParentId = (item.Type == "Epic") ? "" : item.Id.Substring(0, item.Id.LastIndexOf("."));
+          OnlineBacklog.Add(item);
         }
         return true;
       }
@@ -152,11 +189,11 @@ namespace xls2aturenet6.Model
         ErrorItems.Clear();
         string body = "";
         //Post Api Url bereitmachen
-          string apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
+        string apiUrl = Url.Substring(0, Url.LastIndexOf("/_backlogs/")) + "/_api/_wit/updateWorkItems?__v=5";
         foreach (DataItem item in items)
         {
           if (!item.CreateThis && !item.UpdateThis) continue;
-          body = (item.CreateThis) ? PrepareBodyForCreation(item, parents): PrepareBodyForUpdate(item);
+          body = (item.CreateThis) ? PrepareBodyForCreation(item, parents) : PrepareBodyForUpdate(item);
           var result = await BasePostRequestAsync(apiUrl, body);
           var response = await result.Content.ReadAsStringAsync();
           var jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
@@ -176,7 +213,7 @@ namespace xls2aturenet6.Model
               {
                 errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
                 Result = MessageBox.Show(errortext + "\n\n" + "Would you like to continue with the next item?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                ErrorItems.Add(item.Id + " " + item.Name +"\n Not created!");
+                ErrorItems.Add(item.Id + " " + item.Name + "\n Not created!");
                 if (Result == MessageBoxResult.Yes) continue;
                 else return false;
               }
@@ -195,8 +232,8 @@ namespace xls2aturenet6.Model
     {
       string body = createBody;
       body = body.Replace("itemType", item.Type);
-      body = body.Replace("itemName", item.Id + " "+ item.Name);
-      body = body.Replace("employeeValue", item.AzureEmployee =="" ? "" : @"\""24\"":\""" +item.AzureEmployee);
+      body = body.Replace("itemName", item.Id + " " + item.Name);
+      body = body.Replace("employeeValue", item.AzureEmployee == "" ? "" : @"\""24\"":\""" + item.AzureEmployee);
       if (parents != null)
       {
         body = body.Replace("itemLink", addedLink);
