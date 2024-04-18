@@ -33,7 +33,8 @@ namespace xls2aturenet6.Model
 ";
     private string getUrl = "";
     private string updateBody = @"{""updatePackage"":""[{\""id\"":azureId,\""rev\"":revision,\""projectId\"":\""scopeValue\"",\""isDirty\"":true,\""fields\"":{\""1\"":\""itemName\""}}]""}";
-
+    private string teamId = "";
+    private string projectId ="";
     public List<string> ErrorItems { get; set; }
     public List<DataItem> OnlineBacklog { get; set; }
     private string scopeValue { get; set; }
@@ -41,7 +42,7 @@ namespace xls2aturenet6.Model
     #endregion Properties
 
     #region Construktor
-    public APIConnector(string username, SecureString password, string url, string proxyAdress = "")
+    public APIConnector(string username, SecureString password, string url, string apiteamId ="", string apiprojectId ="",string proxyAdress = "")
     {
       ErrorItems = new List<string>();
       if (proxyAdress != "")
@@ -61,6 +62,9 @@ namespace xls2aturenet6.Model
       // Set Username and password
       var credential = new NetworkCredential(username, password);//, domain);
 
+        teamId = apiteamId == null ? "" : apiteamId;
+        projectId = apiprojectId == null ? "" :apiprojectId ;
+      
       handler.Credentials = credential;
       // Finally, create the HTTP client object
       client = new HttpClient(handler: handler, disposeHandler: true);
@@ -99,8 +103,11 @@ namespace xls2aturenet6.Model
         response = await result.Content.ReadAsStringAsync();
         if (!result.IsSuccessStatusCode) { throw new Exception(result.ReasonPhrase + "\n" + response); }
         jsonResponse = JObject.Parse(response);
-        string projectId = "";
-        string teamId = "";
+        if(teamId.Trim() == "" ||  projectId.Trim() == "")
+        {
+
+        projectId = "";
+        teamId = "";
         var teams = jsonResponse.Value<JArray>("children")[0].Value<JArray>("children"); 
         var projects = jsonResponse.Value<JArray>("children")[1].Value<JArray>("children");
         var potentialProjectId = projects.Where(x => x.Value<string>("name") == teamName).FirstOrDefault();
@@ -133,6 +140,7 @@ namespace xls2aturenet6.Model
           {
             throw new Exception("Backlog not found!");
           }
+        }
         }
 
 

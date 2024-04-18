@@ -19,8 +19,8 @@
   <Grid Background="White">
     <Grid.RowDefinitions>
       <RowDefinition Height="2*" />
-      <RowDefinition Height="5*" />
       <RowDefinition Height="7*" />
+      <RowDefinition Height="5*" />
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
     <!--Caption-->
@@ -40,11 +40,22 @@
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
+          <RowDefinition Height="1*"/>
+          <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <TextBlock Grid.Row ="0" Text="Link to the Backlog:"  Margin="5,2.5,0,2.5"/> 
         <TextBlock Grid.Row ="1" Text="Username:" Margin="5,2.5,0,2.5" />
         <TextBlock Grid.Row ="2" Text="Password:" Margin="5,2.5,0,2.5" />
-        <DockPanel Grid.Row ="3">
+        <DockPanel Grid.Row ="3" Margin="5,2.5,0,2.5">
+        <TextBlock Text="Team Id (optional):"  />
+          <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+        </DockPanel>
+        <DockPanel Grid.Row ="4" Margin="5,2.5,0,2.5">
+        <TextBlock Text="Project Id (optional):" />
+          <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
+
+        </DockPanel>
+        <DockPanel Grid.Row ="5">
           <CheckBox VerticalAlignment="Center" IsChecked="{Binding UseProxy, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" />
           <TextBlock Text="Use Proxy" Margin="2.5,2.5,0,2.5"/>
             <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Use this option only if you need a proxy to enter the Backlog." CornerRadius="30" Height="25" Width="25" Margin="2.5,2.5,0,2.5">
@@ -52,11 +63,13 @@
             </Border>
          
         </DockPanel>
-        <TextBlock Grid.Row ="4" Text="Proxy Address:" Margin="5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="6" Text="Proxy Address:" Margin="5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
       </Grid>
       <!-- Input-->
       <Grid Grid.Column="1">
         <Grid.RowDefinitions>
+          <RowDefinition Height="1*"/>
+          <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
@@ -91,7 +104,9 @@
           </TextBlock.Style>
         </TextBlock>
         <PasswordBox Grid.Row="2" PasswordChar="*" PasswordChanged="PasswordBox_PasswordChanged" Margin="5"/>
-        <Grid Grid.Row="4" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}">
+        <TextBox Grid.Row="3" Text="{Binding ApiTeamId, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5" />
+        <TextBox Grid.Row="4" Text="{Binding ApiProjectId, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5" />
+        <Grid Grid.Row="6" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}">
 
           <TextBox  x:Name="Textbox3" Text="{Binding ProxyAddress, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5" />
           <TextBlock IsHitTestVisible="False" TextWrapping="Wrap" Text="Go To 'Network &amp; Internet' -> 'Proxy' to see the Address" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >

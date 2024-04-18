@@ -1,5 +1,6 @@
 ﻿using AxcToAzure.Model;
 using AxcToAzure.Utilities;
+using AxcToAzure.View;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -33,12 +34,12 @@ namespace AxcToAzure.ViewModel
       get { return Get<string>(); }
       set { Set(value); }
     }
-    public string ApiParam1
+    public string ApiTeamId
     {
       get { return Get<string>(); }
       set { Set(value); }
     }
-    public string ApiParam2
+    public string ApiProjectId
     {
       get { return Get<string>(); }
       set { Set(value); }
@@ -101,17 +102,24 @@ namespace AxcToAzure.ViewModel
     public ICommand ContinueCommand { get; private set; }
     public ICommand BackCommand { get; private set; }
     public ICommand CompareCommand { get; private set; }
+    public ICommand OpenInstructionCommand { get; private set; }
     public void CreateCommands()
     {
       ContinueCommand = new RelayCommand(Continue);
       BackCommand = new RelayCommand(Back);
       CompareCommand = new RelayCommand(Compare);
+      OpenInstructionCommand = new RelayCommand(OpenInstruction);
+    }
+    private void OpenInstruction()
+    {
+      APIInstructionWindow instructionWindow = new APIInstructionWindow();
+      instructionWindow.Show();
     }
     private void Continue()
     {
       if (!FieldsWritten()) return;
       Working.Invoke(this, true);
-      ApiConnector = new APIConnector(Username, SecurePassword, Url, (UseProxy) ? ProxyAddress : "");
+      ApiConnector = new APIConnector(Username, SecurePassword, Url, ApiTeamId, ApiProjectId, (UseProxy) ? ProxyAddress : "");
       Working.Invoke(this, false);
       ChangeStep(this, 6);
     }
@@ -119,7 +127,7 @@ namespace AxcToAzure.ViewModel
     {
       if (!FieldsWritten()) return;
       Working.Invoke(this, true);
-      ApiConnector = new APIConnector(Username, SecurePassword, Url, (UseProxy) ? ProxyAddress : "");
+      ApiConnector = new APIConnector(Username, SecurePassword, Url, ApiTeamId, ApiProjectId, (UseProxy) ? ProxyAddress : "");
       Working.Invoke(this, false);
       ChangeStep(this, 5);
     }
