@@ -6,6 +6,7 @@
               xmlns:vm="clr-namespace:AxcToAzure.ViewModel" 
              d:DataContext="{d:DesignInstance vm:ExcelViewModel, IsDesignTimeCreatable=False}"
              xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
+             xmlns:resx="clr-namespace:AxcToAzure.Properties"
              xmlns:local="clr-namespace:AxcToAzure.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontSize="20" >
@@ -22,7 +23,7 @@
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
     <!--Caption-->
-    <TextBlock Grid.Row="0"  Text="Excel Input" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+    <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.ExcelViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <!--Work Area -->
 
 
@@ -43,38 +44,38 @@
             <RowDefinition Height="1*"/>
           </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="5,2.5,15,2.5">
-          <TextBlock Text="Path to the Excel-File (.xlsx):"  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Click on the three dots, then select your Excel File" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="{x:Static resx:Resources.ExcelViewPath}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewPathToolTip}" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
             <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
           </Border>
         </DockPanel>
         <DockPanel Grid.Row="1" Visibility="{Binding FileLoaded, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
-          <TextBlock  Text="Name of the Worksheet:"  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Select which worksheet contains the informations." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock  Text="{x:Static resx:Resources.ExcelViewWorksheetName}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewWorksheetNameToolTip}" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
             <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
           </Border>
         </DockPanel>
         <DockPanel Grid.Row="2" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
-          <TextBlock   Text="Column for Itemdescriptions:  "  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the Description of the Items." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock   Text="{x:Static resx:Resources.ExcelViewItemDescription}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewItemDescriptionToolTip}" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
         </DockPanel>
         <DockPanel Grid.Row="3" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
-          <TextBlock Text="Column for Itemnumbers: "  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the Projectnumber of the Items." CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="{x:Static resx:Resources.ExcelViewItemNumber}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewItemNumberToolTip}" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
         </DockPanel>
         <DockPanel Grid.Row="4" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
-          <TextBlock   Text="Column for Employees assigned (optional):  "  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which column contains the employee, who will be assigned on the items.&#10;Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock   Text="{x:Static resx:Resources.ExcelViewItemEmployee}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewItemEmployeeToolTip}" CornerRadius="30" Height="25" Width="25" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
         </DockPanel>
         <DockPanel Grid.Row="5" Visibility="{Binding EmployeeSet, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
-          <TextBlock  Text="Default Employee (if more than 1): "  />
-          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." CornerRadius="30" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
+          <TextBlock  Text="{x:Static resx:Resources.ExcelViewItemEmployeeDefault}"  />
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.ExcelViewItemEmployeeDefaultToolTip}" CornerRadius="30" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
         </DockPanel>
@@ -107,7 +108,7 @@
               <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
           <TextBox Grid.Row="0" VerticalContentAlignment="Center" x:Name="Textbox1" Text="{Binding DescriptionColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-            <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. B" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+          <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.ExcelViewItemDescriptionBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                   <Setter Property="Visibility" Value="Collapsed"/>
@@ -120,7 +121,7 @@
               </TextBlock.Style>
             </TextBlock>
           <TextBox Grid.Row="1" VerticalContentAlignment="Center" x:Name="Textbox2" Text="{Binding NumberColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5"  />
-            <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. D" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+          <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.ExcelViewItemNumberBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                   <Setter Property="Visibility" Value="Collapsed"/>
@@ -133,7 +134,7 @@
               </TextBlock.Style>
             </TextBlock>
           <TextBox Grid.Row="2" VerticalContentAlignment="Center" x:Name="Textbox3" Text="{Binding EmployeeColumn, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-            <TextBlock Grid.Row="2" IsHitTestVisible="False" TextWrapping="Wrap" Text="e.g. C" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+          <TextBlock Grid.Row="2" IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.ExcelViewItemEmployeeBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
               <TextBlock.Style>
                 <Style TargetType="{x:Type TextBlock}">
                   <Setter Property="Visibility" Value="Collapsed"/>
@@ -170,7 +171,7 @@
       </Grid.RowDefinitions>
       <DockPanel Grid.Row="0" Margin="3,0,0,0">
         <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}"  VerticalAlignment="Center"/>
-        <TextBlock VerticalAlignment="Center" Text="How to export the Report from Axc" Margin="3,0,0,0"/>
+        <TextBlock VerticalAlignment="Center" Text="{x:Static resx:Resources.ExcelViewInstruction}" Margin="3,0,0,0"/>
       </DockPanel>
       <Grid Grid.Row="1" >
         <Grid.RowDefinitions>
@@ -179,7 +180,7 @@
         </Grid.RowDefinitions>
         <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,3,0"/>
         <TextBlock Grid.Row="1" Text="{Binding Path=Log, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0"/>
-        <TextBlock Grid.Row="1" Text="Finished" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
+        <TextBlock Grid.Row="1" Text="{x:Static resx:Resources.ExcelViewFinished}" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
       </Grid>
     </Grid>
     <!-- Button Area-->
@@ -191,9 +192,9 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Exit" Background="Red" FontSize="26"  Command="{Binding ExitCommand}"/>
-      <Button Grid.Column="2" Content="Read File" Background="LightGreen" FontSize="26" Command="{Binding ReadFileCommand}" Visibility="{Binding ColumnsSet, Converter={StaticResource BoolToVisibilityConverter}}"/>
-      <Button Grid.Column="4" Content="Continue" Background="Green" FontSize="26" Command="{Binding ContinueCommand}" Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
+      <Button Grid.Column="0" Content="{x:Static resx:Resources.ButtonExit}" Background="Red" FontSize="26"  Command="{Binding ExitCommand}"/>
+      <Button Grid.Column="2" Content="{x:Static resx:Resources.ExcelViewButtonReadFile}" Background="LightGreen" FontSize="26" Command="{Binding ReadFileCommand}" Visibility="{Binding ColumnsSet, Converter={StaticResource BoolToVisibilityConverter}}"/>
+      <Button Grid.Column="4" Content="{x:Static resx:Resources.ButtonContinue}" Background="Green" FontSize="26" Command="{Binding ContinueCommand}" Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
   </Grid>
 </UserControl>

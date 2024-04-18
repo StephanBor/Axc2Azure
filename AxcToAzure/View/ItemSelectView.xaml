@@ -24,9 +24,9 @@
     </Grid.RowDefinitions>
     <!--Caption-->
     <StackPanel>
-      
-    <TextBlock Grid.Row="0"  Text="Itemselection" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
-    <TextBlock Grid.Row="0" Text="Please select which items should be processed" Margin="5,0,0,0" />
+
+      <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.ItemSelectViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+      <TextBlock Grid.Row="0" Text="{x:Static resx:Resources.ItemSelectViewInstruction}" Margin="5,0,0,0" />
     </StackPanel>
     <!--Work Area -->
     <TreeView Grid.Row="1" ItemsSource="{Binding Nodes}">
@@ -53,8 +53,8 @@
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
-      <Button Grid.Column="2" Content="Continue" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
+      <Button Grid.Column="0" Content="{x:Static resx:Resources.ButtonBack}" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="2" Content="{x:Static resx:Resources.ButtonContinue}" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
     </Grid>
   </Grid>
 </UserControl>

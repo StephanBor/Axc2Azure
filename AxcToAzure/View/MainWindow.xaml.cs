@@ -23,6 +23,10 @@ namespace AxcToAzure
   {
     public MainWindow()
     {
+      var Result = MessageBox.Show(AxcToAzure.Properties.Resources.MessageSetLanguage, AxcToAzure.Properties.Resources.MessageSetLanguageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+      if (Result == MessageBoxResult.Yes) System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
+      else System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
       DataContext = new MainWindowViewModel();
       InitializeComponent();
     }

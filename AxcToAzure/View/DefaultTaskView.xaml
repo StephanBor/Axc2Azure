@@ -25,14 +25,14 @@
     </Grid.RowDefinitions>
     <StackPanel>
 
-      <TextBlock Grid.Row="0"  Text="Defaulttasks" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
-      <TextBlock Grid.Row="0" Text="Add Default Tasks to the User-Stories" Margin="5,0,0,0" />
+      <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.DefaultTaskViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+      <TextBlock Grid.Row="0" Text="{x:Static resx:Resources.DefaultTaskViewInstruction}" Margin="5,0,0,0" />
     </StackPanel>
     <DockPanel Grid.Row="1" Margin="5,0,0,0">
-      <Button Content="Open" VerticalAlignment="Center" Command="{Binding OpenDefaultTaskListCommand}"/>
-      <TextBlock Text=" the Default Task List" VerticalAlignment="Center" Margin="2,0,50,0"/>
-      <Button Content="Refresh" VerticalAlignment="Center" Command="{Binding RefreshDefaultTaskListCommand}"/>
-      <TextBlock Text=" the Default Task List" VerticalAlignment="Center" Margin="2,0,0,0"/>
+      <Button Content="{x:Static resx:Resources.DefaultTaskViewButtonOpen}" VerticalAlignment="Center" Command="{Binding OpenDefaultTaskListCommand}"/>
+      <TextBlock Text="{x:Static resx:Resources.DefaultTaskViewButtonTexts}" VerticalAlignment="Center" Margin="5,0,50,0"/>
+      <Button Content="{x:Static resx:Resources.DefaultTaskViewButtonRefresh}" VerticalAlignment="Center" Command="{Binding RefreshDefaultTaskListCommand}"/>
+      <TextBlock Text="{x:Static resx:Resources.DefaultTaskViewButtonTexts}" VerticalAlignment="Center" Margin="5,0,0,0"/>
     </DockPanel>
     <!--Work Area -->
     <ListBox Grid.Row="2" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="26" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Stories}" >
@@ -65,8 +65,8 @@
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
-      <Button Grid.Column="2" Content="Continue" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
+      <Button Grid.Column="0" Content="{x:Static resx:Resources.ButtonBack}" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="2" Content="{x:Static resx:Resources.ButtonContinue}" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
     </Grid>
   </Grid>
 </UserControl>
