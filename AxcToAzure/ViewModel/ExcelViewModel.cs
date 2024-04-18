@@ -62,7 +62,7 @@ namespace AxcToAzure.ViewModel
     public string EmployeeColumn
     {
       get { return Get<string>(); }
-      set { Set(value.ToUpper().Trim()); CheckColumnsValue(); }
+      set { Set(value.ToUpper().Trim()); EmployeeSet = SheetSelected&& (value.Trim() != ""); CheckColumnsValue(); }
     }
     public int DefaultEmployee
     {
@@ -76,6 +76,11 @@ namespace AxcToAzure.ViewModel
       set { Set(value); }
     }
     public bool SheetSelected
+    {
+      get { return Get<bool>(); }
+      set { Set(value); }
+    }
+    public bool EmployeeSet
     {
       get { return Get<bool>(); }
       set { Set(value); }

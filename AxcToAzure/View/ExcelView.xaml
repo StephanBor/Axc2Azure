@@ -72,7 +72,7 @@
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
         </Border>
         </DockPanel>
-        <DockPanel Grid.Row="5" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
+        <DockPanel Grid.Row="5" Visibility="{Binding EmployeeSet, Converter={StaticResource BoolToVisibilityConverter}}" Margin="5,2.5,15,2.5">
           <TextBlock  Text="Default Employee (if more than 1): "  />
           <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Set which employee will be assigned to the items, if there is more than one Employee set.&#10;If the set number is greater than the number of employees, the last Employee one will be assigned&#10;Tasks will be copied for each employee assigned." CornerRadius="30" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="2.5,2.5,0,2.5">
           <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -146,7 +146,7 @@
               </TextBlock.Style>
             </TextBlock>
           </Grid>
-          <Grid Grid.Row="3" Visibility="{Binding SheetSelected, Converter={StaticResource BoolToVisibilityConverter}}" >
+        <Grid Grid.Row="3" Visibility="{Binding EmployeeSet, Converter={StaticResource BoolToVisibilityConverter}}" >
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="8*"/>
               <ColumnDefinition Width=" *"/>

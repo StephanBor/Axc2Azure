@@ -81,7 +81,8 @@ namespace xls2aturenet6.Model
       {
         //Aus angegebener URL Teamnamen schneiden
         int startindex = Url.LastIndexOf("/backlog/") + 9;
-        var teamName = Url.Substring(startindex, Url.LastIndexOf("/Epics") - startindex).Replace("%20", " ");
+        string categoryName = (Url.Contains("/Epics")) ? "/Epics" : (Url.Contains("/Features")) ? "/Features" : (Url.Contains("/Stories")) ? "/Stories" : "/"; 
+        var teamName = Url.Substring(startindex, Url.LastIndexOf(categoryName) - startindex).Replace("%20", " ");
         // Cut till Projectname
         startindex = Url.LastIndexOf("/tfs/") + 5;
         var shortenedUrl = Url.Substring(startindex);

@@ -137,11 +137,11 @@ namespace AxcToAzure.ViewModel
           item.CreateThis = false;
 
           bool namesMatch = partner.Name == item.Name;
+          item.AzureId = partner.AzureId;
+          item.Revision = partner.Revision;
 
           if (namesMatch) continue;
           item.UpdateThis = true;
-          item.AzureId = partner.AzureId;
-          item.Revision = partner.Revision;
           item.UpdateReason = $"Name in Backlog: {partner.Name}";
           App.Current.Dispatcher.Invoke((Action)delegate
           {
