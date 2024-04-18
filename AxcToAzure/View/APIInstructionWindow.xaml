@@ -24,7 +24,7 @@
         <TextBlock Text="2.  F12 drücken und zu Netzwerkanalyse (Chrome: Network) navigieren"/>
       </StackPanel>
       <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10">
-        <TextBlock Text="3.  Ein neues Epic anlegen"/>
+        <TextBlock Text="3.  Ein neues Epic anlegen (kann danach wieder gelöscht werden)"/>
         <TextBlock Text="4.  Die Anfrage 'updateWorkItems' auswählen und auf 'Anfrage' (Chrome: 'Preview') navigieren"/>
         <TextBlock Text="5.  Hinterste Nummern eintragen (hier: teamId =315, projectId =507)"/>
       </StackPanel>
