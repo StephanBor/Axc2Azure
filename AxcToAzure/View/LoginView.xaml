@@ -7,6 +7,7 @@
              xmlns:m="clr-namespace:AxcToAzure.Model" 
              d:DataContext="{d:DesignInstance vm:LoginViewModel, IsDesignTimeCreatable=False}"
              xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
+              xmlns:resx="clr-namespace:AxcToAzure.Properties"
              xmlns:utilities="clr-namespace:AxcToAzure.Utilities"
              xmlns:local="clr-namespace:AxcToAzure.View"
              mc:Ignorable="d" 
@@ -24,7 +25,7 @@
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
     <!--Caption-->
-    <TextBlock Grid.Row="0"  Text="Credential Input" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+    <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.LoginViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <!--Work Area -->
     <Grid Grid.Row="1">
 
@@ -43,27 +44,27 @@
           <RowDefinition Height="1*"/>
           <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row ="0" Text="Link to the Backlog:"  Margin="5,2.5,0,2.5"/> 
-        <TextBlock Grid.Row ="1" Text="Username:" Margin="5,2.5,0,2.5" />
-        <TextBlock Grid.Row ="2" Text="Password:" Margin="5,2.5,0,2.5" />
+        <TextBlock Grid.Row ="0" Text="{x:Static resx:Resources.LoginViewLink}"  Margin="5,2.5,0,2.5"/>
+        <TextBlock Grid.Row ="1" Text="{x:Static resx:Resources.LoginViewUsername}" Margin="5,2.5,0,2.5" />
+        <TextBlock Grid.Row ="2" Text="{x:Static resx:Resources.LoginViewPassword}" Margin="5,2.5,0,2.5" />
         <DockPanel Grid.Row ="3" Margin="5,2.5,0,2.5">
-        <TextBlock Text="Team Id (optional):"  />
+          <TextBlock Text="{x:Static resx:Resources.LoginViewTeamId}"  />
           <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
         </DockPanel>
         <DockPanel Grid.Row ="4" Margin="5,2.5,0,2.5">
-        <TextBlock Text="Project Id (optional):" />
+          <TextBlock Text="{x:Static resx:Resources.LoginViewProjectId}" />
           <Button  Content="?" Width="30" Height="30" Command="{Binding OpenInstructionCommand}" HorizontalAlignment="Right" Margin="0,0,5,0" VerticalAlignment="Center"/>
 
         </DockPanel>
         <DockPanel Grid.Row ="5">
           <CheckBox VerticalAlignment="Center" IsChecked="{Binding UseProxy, UpdateSourceTrigger=PropertyChanged}" Margin="5,0,0,0" />
-          <TextBlock Text="Use Proxy" Margin="2.5,2.5,0,2.5"/>
-            <Border BorderBrush="Gray" BorderThickness="1" ToolTip="Use this option only if you need a proxy to enter the Backlog." CornerRadius="30" Height="25" Width="25" Margin="2.5,2.5,0,2.5">
+          <TextBlock Text="{x:Static resx:Resources.LoginViewProxyUse}" Margin="2.5,2.5,0,2.5"/>
+          <Border BorderBrush="Gray" BorderThickness="1" ToolTip="{x:Static resx:Resources.LoginViewProxyToolTip}" CornerRadius="30" Height="25" Width="25" Margin="2.5,2.5,0,2.5">
               <TextBlock Text="?" FontSize="20"  Foreground="Gray"  VerticalAlignment="Center" HorizontalAlignment="Center" />
             </Border>
          
         </DockPanel>
-        <TextBlock Grid.Row ="6" Text="Proxy Address:" Margin="5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
+        <TextBlock Grid.Row ="6" Text="{x:Static resx:Resources.LoginViewProxyAddress}" Margin="5,2.5,0,2.5" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}"/>
       </Grid>
       <!-- Input-->
       <Grid Grid.Column="1">
@@ -78,7 +79,7 @@
         </Grid.RowDefinitions>
 
         <TextBox Grid.Row="0" x:Name="Textbox1" Text="{Binding Url, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
-        <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="http://tfs.proleit-ag.local:8080/tfs/*****/*****/_backlogs/backlog/*****/Epics" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+        <TextBlock Grid.Row="0" IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.LoginViewLinkBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
           <TextBlock.Style>
             <Style TargetType="{x:Type TextBlock}">
               <Setter Property="Visibility" Value="Collapsed"/>
@@ -91,7 +92,7 @@
           </TextBlock.Style>
         </TextBlock>
         <TextBox Grid.Row="1" x:Name="Textbox2" Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5" />
-        <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="firstname.lastname@proleit.com" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+        <TextBlock Grid.Row="1" IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.LoginViewUsernameBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
           <TextBlock.Style>
             <Style TargetType="{x:Type TextBlock}">
               <Setter Property="Visibility" Value="Collapsed"/>
@@ -109,7 +110,7 @@
         <Grid Grid.Row="6" Visibility="{Binding UseProxy, Converter={StaticResource BoolToVisibilityConverter}}">
 
           <TextBox  x:Name="Textbox3" Text="{Binding ProxyAddress, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Margin="5" />
-          <TextBlock IsHitTestVisible="False" TextWrapping="Wrap" Text="Go To 'Network &amp; Internet' -> 'Proxy' to see the Address" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
+          <TextBlock IsHitTestVisible="False" TextWrapping="Wrap" Text="{x:Static resx:Resources.LoginViewProxyBlankText}" VerticalAlignment="Top" Margin="7,5,5,5" Foreground="DarkGray" >
             <TextBlock.Style>
               <Style TargetType="{x:Type TextBlock}">
                 <Setter Property="Visibility" Value="Collapsed"/>
@@ -135,9 +136,9 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
-      <Button Grid.Column="2" Content="Compare with &#10;existing Backlog" Background="Orange" FontSize="26" Command="{Binding CompareCommand}"/>
-      <Button Grid.Column="4" Content="Create all items" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
+      <Button Grid.Column="0" Content="{x:Static resx:Resources.ButtonBack}" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="2" Content="{x:Static resx:Resources.LoginViewButtonCompare}" Background="Orange" FontSize="26" Command="{Binding CompareCommand}"/>
+      <Button Grid.Column="4" Content="{x:Static resx:Resources.LoginViewButtonCreate}" Background="Green" FontSize="26" Command="{Binding ContinueCommand}"/>
     </Grid>
   </Grid>
 </UserControl>

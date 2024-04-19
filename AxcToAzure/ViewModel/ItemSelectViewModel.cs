@@ -47,6 +47,7 @@ namespace AxcToAzure.ViewModel
     #region Methods
     public void BuildTree()
     {
+    // Angezeigter Tree startet bei Epics
       Nodes = new ObservableCollection<DataItem>();
       foreach (var item in DataItems)
       {
@@ -54,7 +55,10 @@ namespace AxcToAzure.ViewModel
       }
 
     }
-
+    /// <summary>
+    /// Wählt Parent aus, wenn Child gewählt wurde
+    /// </summary>
+    /// <param name="item"></param>
     private void SetParentsCreateStatus(DataItem item)
     {
       if (item.Type != "Epic")
@@ -68,6 +72,10 @@ namespace AxcToAzure.ViewModel
         }
       }
     }
+    /// <summary>
+    /// Wählt Kinder ab, wenn Parent abgewählt wurde
+    /// </summary>
+    /// <param name="item"></param>
     private void SetChildrensCreateStatus(DataItem item)
     {
       if (item.Children.Count > 0) //Gibt es Kinder?
@@ -99,7 +107,7 @@ namespace AxcToAzure.ViewModel
       BackCommand = new RelayCommand(Back);
     }
     /// <summary>
-    /// Funktion um die Excel Datei zu finden
+    /// Funktion um die Items an- und abzuwählen
     /// </summary>
     private void CheckboxClicked(string id)
     {

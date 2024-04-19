@@ -11,7 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using xls2aturenet6.Model;
+using Resx = AxcToAzure.Properties.Resources;
+
 
 namespace AxcToAzure.ViewModel
 {
@@ -78,6 +79,9 @@ namespace AxcToAzure.ViewModel
 
     #endregion
     #region Methods
+    /// <summary>
+    /// Sortiert die Dataitems in 4 Listen, je nach Typ (Epic, Feature,...)
+    /// </summary>
     public void SortData()
     {
       epics = new List<DataItem>();
@@ -99,6 +103,10 @@ namespace AxcToAzure.ViewModel
         }
       }
     }
+    /// <summary>
+    /// Steuert den Ablauf um Items anzulegen
+    /// </summary>
+    /// <returns>true wenn erfolgreich</returns>
     async Task<bool> WorkData()
     {
       Log = "";
@@ -109,15 +117,17 @@ namespace AxcToAzure.ViewModel
       BarProgress = 0;
       if (!ApiConnector.Initialized)
       {
-        Log += "Establishing Connection to Backlog\n";
-        if (!await ApiConnector.InitializeConnection()) 
-        { 
-          Log += "Error. Check your URL, Credentials and Internet Connection\n";
+        //Initilisiere Verbindung zu DevOps
+        Log += Resx.MessageEstablishConnection+"\n";
+        if (!await ApiConnector.InitializeConnection())
+        {
+          Log += Resx.MessageLoginError + "\n";
           DataWorking = false;
-          return false; 
+          return false;
         }
-        Log += "Connection Successfully established\n";
+        Log += Resx.MessageLoginSuccess + "\n";
       }
+      //Setzt welcher Itemtyp bearbeitet werden soll und welcher Typ die Eltern sind
       for (int i = 0; i < 4; i++)
       {
         switch (i)
@@ -145,26 +155,28 @@ namespace AxcToAzure.ViewModel
           default: break;
 
         }
-        Log+="Start with creating " + currentItemClass+"\n";
+        Log+= Resx.ProgressViewModelStartCreating+" " + currentItemClass+"\n";
+        //Übergebe zu Bearbeitende Daten and APIConnector
         if (!await ApiConnector.CreateAndUpdateDataItems(dataItems, parents))
         {
           BarProgress = 0;
-          Log += "An Error occured. Please check your Internet Connection.\n";
+          Log += Resx.ProgressViewModelErrorCreating+"\n";
           DataWorking = false;
           FinishedSuccessfully=false; 
           return false;
 
         }
         BarProgress += 25;
+        //Zeige ob und welche Items nicht angelegt werden konnten
         if (ApiConnector.ErrorItems.Count() > 0) 
         {
-          Log += currentItemClass + " created. Problems occured with:\n";
+          Log += currentItemClass + " "+Resx.ProgressViewModelPartiallyCreating +"\n";
           foreach (var item in ApiConnector.ErrorItems)
           {
             Log += item + "\n";
           }
         }
-        else Log += currentItemClass + " created successfully.\n";
+        else Log += currentItemClass + " "+ Resx.ProgressViewModelSuccessCreating + "\n";
       }
       DataWorking = false;
       FinishedSuccessfully = true;
@@ -187,6 +199,7 @@ namespace AxcToAzure.ViewModel
     {
       if (DataWorking) return;
       Working.Invoke(this, true);
+      // neuer Thread um UI während der Bearbeitung upzudaten (Progressbar, Log)
       new Thread(()=>WorkData().Wait()).Start();
       Working.Invoke(this, false);
     }

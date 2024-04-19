@@ -18,6 +18,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Excel = Microsoft.Office.Interop.Excel;
+using Resx = AxcToAzure.Properties.Resources;
 
 namespace AxcToAzure.ViewModel
 {
@@ -137,7 +138,7 @@ namespace AxcToAzure.ViewModel
     #endregion
     #region Methods
     /// <summary>
-    /// Überträgt die Namen der Worksheets in die Liste für die Combobox
+    /// Öffnet die Excel Datei und überträgt die Namen der Worksheets in die Liste für die Combobox
     /// </summary>
     public void OpenFile()
     {
@@ -151,9 +152,9 @@ namespace AxcToAzure.ViewModel
       workBook = excel.Workbooks.Open(FilePath);
       for (int i = 1; i <= workBook.Worksheets.Count; i++)
       {
-
         WorksheetNames.Add(((Worksheet)workBook.Worksheets[i]).Name);
       }
+      //Prüfe ob es schon Project Report gibt
       var sheet = WorksheetNames.Where(x => x.Trim() == "ProjectReport"|| x.Trim() == "Project Report").FirstOrDefault(); 
       if( sheet != null)
       {
@@ -165,14 +166,14 @@ namespace AxcToAzure.ViewModel
       Working.Invoke(this, false);
     }
     /// <summary>
-    /// Prüft ob beide Columns angegeben sind und ob deren Werte eine brauchbare Excel Spalte haben (von A - ZZ)
+    /// Prüft ob Columns angegeben sind und ob deren Werte eine brauchbare Excel Spalte haben (von A - ZZ)
     /// </summary>
     public void CheckColumnsValue()
     {
       CanContinue = false;
-      Regex rx = new Regex(@"\A[A-Z]{1,2}\Z");
+      Regex rx = new Regex(@"\A[A-Z]{1,2}\Z"); // 1-2  Großbuchstaben
       if (NumberColumn == null || DescriptionColumn == null) return;
-      if (EmployeeColumn == null || EmployeeColumn == "")
+      if (EmployeeColumn == null || EmployeeColumn == "") 
       {
         bool IsMatch = (DescriptionColumn == NumberColumn);
         ColumnsSet = (rx.IsMatch(DescriptionColumn) && rx.IsMatch(NumberColumn) && !IsMatch);
@@ -199,37 +200,40 @@ namespace AxcToAzure.ViewModel
         // Holt sich die Anzahl der Zeilen
         int rows = ws.UsedRange.Rows.Count;
         // Blueprint für die Benennung anlegen
-        Regex epicReg = new Regex(@"^\d+\Z");
-        Regex featureReg = new Regex(@"^\d+\.\d+\Z");
-        Regex storyReg = new Regex(@"^\d+\.\d+\.\d+\Z");
-        Regex taskReg = new Regex(@"^\d+\.\d+\.\d+\.\d+\Z");
-        Regex employeeReg = new Regex(@"^[A-Z][a-z]+\,[A-Z][a-z]+(\;[A-Z][a-z]+\,[A-Z][a-z]+)*\Z");
+        Regex epicReg = new Regex(@"^\d+\Z"); //Zahl -> Epic
+        Regex featureReg = new Regex(@"^\d+\.\d+\Z"); // Zahl.Zahl -> Feature
+        Regex storyReg = new Regex(@"^\d+\.\d+\.\d+\Z"); //Zahl.Zahl.Zahl -> User Story
+        Regex taskReg = new Regex(@"^\d+\.\d+\.\d+\.\d+\Z"); //Zahl.Zahl.Zahl.Zahl ->Task
+        // Mitarbeitername  GroßBuchstabe Kleinbuchstaben (Nachname),GroßBuchstabe Kleinbuchstaben (Vornname) (vielleicht Strichpunkt dann vielleicht Wiederholung)
+        Regex employeeReg = new Regex(@"^[A-Z][a-z]+\,[A-Z][a-z]+(\;[A-Z][a-z]+\,[A-Z][a-z]+)*\Z");  
         Log = "";
         BarProgress = 0;
-        //Sortierschleife
+        //Sortierschleife erstellt Items und weißt Typ, Name, Id und Mitarbeiter zu
         for (int i = 1; i <= rows; i++)
         {
           string objectId = ws.Range[(NumberColumn + i).ToString()].Text.ToString();
           double progress = i * 100 / (rows + 1);
           if (i != rows)
           {
-            Log = progress + " % Reading: " + objectId;
+            Log = progress + " % "+ Resx.ExcelViewModelReading + objectId;
             BarProgress = progress;
           }
-          else
+          else // kurz vor Ende => 99%
           {
             BarProgress = 99;
-            Log = "Setting Children for Data...";
+            Log = Resx.ExcelViewModelChildren;
 
           }
           string objectName = ws.Range[(DescriptionColumn + i).ToString()].Text.ToString();
           string objectEmployee = "";
+          //Nur Wenn EmployeeColumn gesetzt wurde
           if (useEmployees)
           {
             objectEmployee = ws.Range[(EmployeeColumn + i).ToString()].Text.ToString();
             bool IsMatch = employeeReg.IsMatch(Regex.Replace(objectEmployee, @"\s+", string.Empty));
             if (!IsMatch) objectEmployee = ""; // Replace whitespace characters
           }
+          //Prüfe die definierten Typen Regex ab und erstelle sie
           if (epicReg.IsMatch(objectId))
           {
             DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "Epic"));
@@ -247,46 +251,58 @@ namespace AxcToAzure.ViewModel
             DataItems.Add(CreateDataItem(objectId, objectName, objectEmployee, "Task"));
           }
         }
+        //Setze am Ende noch für jeds Item die Kinder (für Treeview in nächstem Fenster)
         SetItemChildren();
         BarProgress = 100;
-        Log = "Finished";
+        Log = Resx.MessageFinished;
 
       }
       catch (Exception ex)
       {
-        Log = "Error";
+        Log = Resx.MessageError;
         BarProgress = 0;
-        MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        MessageBox.Show(ex.ToString(), Resx.MessageError, MessageBoxButton.OK, MessageBoxImage.Error);
       }
       FileInReading = false;
-      CanContinue = (Log != "Error");
+      CanContinue = (Log != Resx.MessageError);
     }
-
-    public DataItem CreateDataItem(string testId, string name, string employee, string type)
+    /// <summary>
+    /// Erstellt das Item
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="name"></param>
+    /// <param name="employee"></param>
+    /// <param name="type"></param>
+    /// <returns></returns>
+    public DataItem CreateDataItem(string id, string name, string employee, string type)
     {
       DataItem dataItem = new DataItem();
-      dataItem.Id = testId;
+      dataItem.Id = id;
       dataItem.Name = name.Replace("\"", "\'");
       dataItem.Type = type;
       dataItem.ParentId = "";
       dataItem.Employee = employee;
+      //Schneide für ParentId die Letzte Zahl ab (1.2.3 -> Parent: 1.2)
       if (type != "Epic")
       {
-        dataItem.ParentId = testId.Substring(0, testId.LastIndexOf("."));
+        dataItem.ParentId = id.Substring(0, id.LastIndexOf("."));
       }
-      //if (debug) Console.WriteLine(dataItem.Id + " " + dataItem.Name + " " + dataItem.ParentId);
+
       return dataItem;
     }
+    /// <summary>
+    /// Setzt die Kinder der Items
+    /// </summary>
     public void SetItemChildren()
     {
 
       foreach (var item in DataItems)
       {
-        if (item.Type != "Task")
+        if (item.Type != "Task") //Tasks haben keine Kinder
         {
 
           foreach (var child in DataItems)
-          {
+          { //Epcis können keine children sein
             if (child.Type != "Epic" && item.Id == child.ParentId)
             {
               item.Children.Add(child);
@@ -328,21 +344,24 @@ namespace AxcToAzure.ViewModel
     }
     private void OpenInstruction()
     {
-      InstructionWindow instructionWindow = new InstructionWindow();
+      InstructionsViewModel instructionsViewModel = new InstructionsViewModel("pack://application:,,,/Styles/Axc_Instructions.png", Resx.ExcelInstructionColumn1, Resx.ExcelInstructionColumn2);
+      InstructionView instructionWindow = new InstructionView();
+      instructionWindow.DataContext = instructionsViewModel;
       instructionWindow.Show();
     }
     private void ReadFile()
     {
       if (!FileInReading)
       {
+        // neuer Thread um UI während der Bearbeitung upzudaten (Progressbar, Log)
         Thread t = new Thread(sortData);
         t.Start();
       }
     }
-    private void ChangeDefaultEmployee(string inc)
+    private void ChangeDefaultEmployee(string inc) // inc = +1 oder -1
     {
       int x = Convert.ToInt32(inc);
-      if (FileInReading || (DefaultEmployee + x) < 1) return;
+      if (FileInReading || (DefaultEmployee + x) < 1) return; //Nicht geringer als 1
       DefaultEmployee += x;
     }
     private void Continue()

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using xls2aturenet6.Model;
+using Resx = AxcToAzure.Properties.Resources;
 
 namespace AxcToAzure.ViewModel
 {
@@ -68,31 +68,44 @@ namespace AxcToAzure.ViewModel
     #region Constructor
     public LoginViewModel() 
     {
+      ApiProjectId = "";
+      ApiTeamId = "";
       LoginViewVisible = false;
       CreateCommands();
     }
     #endregion
     #region Methods
+    /// <summary>
+    /// Prüft ob alle nötigen Felder (Username, Passwort,..)beschrieben sind
+    /// </summary>
+    /// <returns>true wenn alle Felder beschrieben sind</returns>
     public bool FieldsWritten()
     {
       if(Url == null || Url.Trim() =="")
       {
-        MessageBox.Show("Please enter a valid URL!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+        MessageBox.Show(Resx.LoginViewModelMessageUrl, Resx.MessageWarning, MessageBoxButton.OK, MessageBoxImage.Warning);
         return false;
       }
       if (Username == null || Username.Trim() == "")
       {
-        MessageBox.Show("Please enter a valid Usename!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
+        MessageBox.Show(Resx.LoginViewModelMessageUsername, Resx.MessageWarning, MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       if (SecurePassword == null || SecurePassword.Length == 0)
       {
-        MessageBox.Show("Please enter a valid Password!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
+        MessageBox.Show(Resx.LoginViewModelMessagePassword, Resx.MessageWarning, MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       if (UseProxy && (ProxyAddress == null || ProxyAddress.Trim() == ""))
       {
-        MessageBox.Show("Please enter a valid Proxy Adress or uncheck the Box!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning); ;
+        MessageBox.Show(Resx.LoginViewModelMessageProxy, Resx.MessageWarning, MessageBoxButton.OK, MessageBoxImage.Warning); ;
+        return false;
+      }
+      bool projectIdWritten = ApiProjectId != null && ApiProjectId.Trim() != "";
+      bool teamIdWritten = ApiTeamId != null && ApiTeamId.Trim() != "";
+      if((projectIdWritten && !teamIdWritten) || (!projectIdWritten && teamIdWritten))
+      {
+        MessageBox.Show(Resx.LoginViewModelMessageIds, Resx.MessageWarning, MessageBoxButton.OK, MessageBoxImage.Warning); ;
         return false;
       }
       return true;
@@ -112,7 +125,9 @@ namespace AxcToAzure.ViewModel
     }
     private void OpenInstruction()
     {
-      APIInstructionWindow instructionWindow = new APIInstructionWindow();
+      InstructionsViewModel instructionsViewModel = new InstructionsViewModel("pack://application:,,,/Styles/Api_Instructions.png", Resx.ApiInstructionsColumn1, Resx.ApiInstructionsColumn2);
+      InstructionView instructionWindow = new InstructionView();
+      instructionWindow.DataContext = instructionsViewModel;
       instructionWindow.Show();
     }
     private void Continue()

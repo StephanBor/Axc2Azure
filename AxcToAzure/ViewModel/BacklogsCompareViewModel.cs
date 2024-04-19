@@ -9,8 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using xls2aturenet6.Model;
-
+using Resx = AxcToAzure.Properties.Resources;
 namespace AxcToAzure.ViewModel
 {
   public class BacklogsCompareViewModel : NotifyObject
@@ -84,6 +83,10 @@ namespace AxcToAzure.ViewModel
     }
     #endregion
     #region Methods
+    /// <summary>
+    /// Liest die angelegten Items aus dem Backlog
+    /// </summary>
+    /// <returns> true wenn erfolgreich, false wenn nicht</returns>
     async Task<bool> ReadBacklogData()
     {
       Log = "";
@@ -93,34 +96,42 @@ namespace AxcToAzure.ViewModel
       ShowProgress = true;
       if (!ApiConnector.Initialized)
       {
-        Log = "Establishing Connection to Backlog";
+        Log =Resx.MessageEstablishConnection ;
+
+//Initialisiere Verbindung zu DevOps
         if (!await ApiConnector.InitializeConnection())
         {
-          Log = "Error. Check your URL, Credentials and Internet Connection";
+          Log = Resx.MessageLoginError;
           BacklogInReading = false;
           return false;
         }
-        Log = "Connection Successfully established";
+        Log = Resx.MessageLoginSuccess;
       }
       BarProgress = 25;
-      Log = "Trying to get existing Backlog";
+      Log = Resx.BacklogCompareviewModelTryGetBacklog;
+      //Lese den Backlog
       if (!await ApiConnector.GetExistingBacklog())
       {
-        Log = "Error while Reading the Backlog";
+        Log = Resx.BacklogCompareviewModelErrorGetBacklog;
         BarProgress = 0;
         BacklogInReading = false;
         return false;
       }
       BarProgress = 75;
-      Log = "Backlog successfully read. Comparing Data..";
+      Log = Resx.BacklogCompareviewModelSuccessGetBacklog;
+      //Vergleiche mit den aus Excel gelesenen Daten
       CompareItemsWithBacklog(ApiConnector.OnlineBacklog);
       BarProgress = 100;
-      Log = "Finished";
+      Log = Resx.MessageFinished;
       BacklogInReading = false;
       CanContinue = true;
       return true;
 
     }
+    /// <summary>
+    /// Vergleicht den Online- mit dem OfflineBacklog
+    /// </summary>
+    /// <param name="OnlineBacklog"></param>
     public void CompareItemsWithBacklog(List<DataItem> OnlineBacklog)
     { 
       List<DataItem> ItemsToAddLater = new List<DataItem>();
@@ -133,16 +144,19 @@ namespace AxcToAzure.ViewModel
           var partner = OnlineBacklog.Where(x => x.Id == item.Id).FirstOrDefault();
           //Kein partner gefunden => Item muss neu angelegt werden
           if (partner == null) continue;
-          //Items gleich => Mache nichts
+          //Item existiert in Backlog also deaktiviere Bearbeitung, Trage aber AzureId für spaätere Reference ein (für Children)
           item.CreateThis = false;
 
           bool namesMatch = partner.Name == item.Name;
           item.AzureId = partner.AzureId;
           item.Revision = partner.Revision;
-
+          //Items gleich => Mache nichts
           if (namesMatch) continue;
+          // Ansonsten: Markiere für update
           item.UpdateThis = true;
           item.UpdateReason = $"Name in Backlog: {partner.Name}";
+
+          // Seht mich an ich bin ein Programm, ich schaffe es nicht, Daten aus einem separaten Thread in eine Obs. Collection zu bringen.
           App.Current.Dispatcher.Invoke((Action)delegate
           {
             ItemsToCompare.Add(item);
@@ -155,7 +169,7 @@ namespace AxcToAzure.ViewModel
           var offlineItems = DataItems.Where(x => x.Id == item.Id);
           //Kein partner gefunden =>Mache nichts
           if (!onlineItems.Any() || !item.CreateThis) continue;
-          //deactivate all corresponding tasks
+          //Deaktiviere alle Offline Taks, da Online mehr/weniger sein können 
           foreach (var offlineitem in offlineItems)
           {
             offlineitem.CreateThis = false;
@@ -164,17 +178,22 @@ namespace AxcToAzure.ViewModel
           }
           foreach (var onlineitem in onlineItems)
           {
-            
+            // Onlineitems in UpdateListe bringen  - Teil 1
             onlineitem.UpdateReason = $"Name in Backlog: {onlineitem.Name}";
+            onlineitem.UpdateThis = true;
             onlineitem.Name = item.Name;
             ItemsToAddLater.Add(onlineitem); 
           }
 
         }
       }
+      // Onlineitems in UpdateListe bringen  - Teil 2
       foreach ( var item in  ItemsToAddLater)
       {
         DataItems.Add(item);
+
+        // Seht mich an ich bin ein Programm, ich schaffe es nicht, Daten aus einem separaten Thread in eine Obs. Collection zu bringen.
+
         App.Current.Dispatcher.Invoke((Action)delegate
         {
           ItemsToCompare.Add(item);
@@ -204,6 +223,7 @@ namespace AxcToAzure.ViewModel
       if (BacklogInReading) return;
       ItemsToCompare = new ObservableCollection<DataItem>();
       Working.Invoke(this, true);
+      // neuer Thread um UI während der Bearbeitung upzudaten (Progressbar, Log)
       new Thread(() => ReadBacklogData().Wait()).Start();
       //ReadBacklogData().Wait();
       Working.Invoke(this, false);

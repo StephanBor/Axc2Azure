@@ -61,6 +61,138 @@ namespace AxcToAzure.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Backlog not found..
+        /// </summary>
+        public static string ApiConnectorBacklogNotFound {
+            get {
+                return ResourceManager.GetString("ApiConnectorBacklogNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error on item:.
+        /// </summary>
+        public static string ApiConnectorErrorOnItem {
+            get {
+                return ResourceManager.GetString("ApiConnectorErrorOnItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to continue with the next item?.
+        /// </summary>
+        public static string ApiConnectorErrorOnItemContinue {
+            get {
+                return ResourceManager.GetString("ApiConnectorErrorOnItemContinue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Created without Name!.
+        /// </summary>
+        public static string ApiConnectorErrorOnItemCreatedWOName {
+            get {
+                return ResourceManager.GetString("ApiConnectorErrorOnItemCreatedWOName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Not created!.
+        /// </summary>
+        public static string ApiConnectorErrorOnItemNotCreated {
+            get {
+                return ResourceManager.GetString("ApiConnectorErrorOnItemNotCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to try again (without an employee set)?.
+        /// </summary>
+        public static string ApiConnectorErrorOnItemTryAgain {
+            get {
+                return ResourceManager.GetString("ApiConnectorErrorOnItemTryAgain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Could not detect the name of the Backlog.
+        ///Is the correct name:.
+        /// </summary>
+        public static string ApiConnectorNameNotFound {
+            get {
+                return ResourceManager.GetString("ApiConnectorNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IMPORTANT! Do this procedure only if the Backlog 
+        ///could not be found programmatically. 
+        ///1.  Open the Backlog 
+        ///2.  Press F12 and navigate to Networkanalysis (Chrome: Network) .
+        /// </summary>
+        public static string ApiInstructionsColumn1 {
+            get {
+                return ResourceManager.GetString("ApiInstructionsColumn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 3.  Create a new Epic (can be deleted later)
+        ///4.  Click the Request &apos;updateWorkItems&apos; and then &apos;Request&apos; (Chrome: &apos;Preview&apos;)
+        ///5.  Fill in the numbers at the end (here teamId =315, projectId =507).
+        /// </summary>
+        public static string ApiInstructionsColumn2 {
+            get {
+                return ResourceManager.GetString("ApiInstructionsColumn2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while Reading the Backlog.
+        /// </summary>
+        public static string BacklogCompareviewModelErrorGetBacklog {
+            get {
+                return ResourceManager.GetString("BacklogCompareviewModelErrorGetBacklog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Backlog successfully read. Comparing Data....
+        /// </summary>
+        public static string BacklogCompareviewModelSuccessGetBacklog {
+            get {
+                return ResourceManager.GetString("BacklogCompareviewModelSuccessGetBacklog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trying to get existing Backlog.
+        /// </summary>
+        public static string BacklogCompareviewModelTryGetBacklog {
+            get {
+                return ResourceManager.GetString("BacklogCompareviewModelTryGetBacklog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Azure Backlog.
+        /// </summary>
+        public static string BacklogViewHeader {
+            get {
+                return ResourceManager.GetString("BacklogViewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Read Backlogs.
+        /// </summary>
+        public static string BacklogViewReadBacklog {
+            get {
+                return ResourceManager.GetString("BacklogViewReadBacklog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Back.
         /// </summary>
         public static string ButtonBack {
@@ -84,6 +216,15 @@ namespace AxcToAzure.Properties {
         public static string ButtonExit {
             get {
                 return ResourceManager.GetString("ButtonExit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start.
+        /// </summary>
+        public static string ButtonStart {
+            get {
+                return ResourceManager.GetString("ButtonStart", resourceCulture);
             }
         }
         
@@ -133,20 +274,34 @@ namespace AxcToAzure.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1.  Open and select Project
+        ///2.  Tab Reports
+        ///3.  Click P_ProjectReport
+        ///4.  Instead of &apos;fester Zeitraum&apos; --&gt; select &apos;Projektzeitraum&apos;.
+        /// </summary>
+        public static string ExcelInstructionColumn1 {
+            get {
+                return ResourceManager.GetString("ExcelInstructionColumn1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 5.  Okay --&gt; Column Selection Window opens
+        ///6.  &apos;Select Bearbeiter&apos; and &apos;Proj.-Nr./PSP&apos;
+        ///7.  Okay --&gt; Report will be created.
+        /// </summary>
+        public static string ExcelInstructionColumn2 {
+            get {
+                return ResourceManager.GetString("ExcelInstructionColumn2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Read File.
         /// </summary>
         public static string ExcelViewButtonReadFile {
             get {
                 return ResourceManager.GetString("ExcelViewButtonReadFile", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Finished!.
-        /// </summary>
-        public static string ExcelViewFinished {
-            get {
-                return ResourceManager.GetString("ExcelViewFinished", resourceCulture);
             }
         }
         
@@ -214,7 +369,7 @@ namespace AxcToAzure.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default Default Employee (if more than 1):.
+        ///   Looks up a localized string similar to Default Employee (if more than 1):.
         /// </summary>
         public static string ExcelViewItemEmployeeDefault {
             get {
@@ -267,6 +422,24 @@ namespace AxcToAzure.Properties {
         public static string ExcelViewItemNumberToolTip {
             get {
                 return ResourceManager.GetString("ExcelViewItemNumberToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Setting Children for Data....
+        /// </summary>
+        public static string ExcelViewModelChildren {
+            get {
+                return ResourceManager.GetString("ExcelViewModelChildren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reading: .
+        /// </summary>
+        public static string ExcelViewModelReading {
+            get {
+                return ResourceManager.GetString("ExcelViewModelReading", resourceCulture);
             }
         }
         
@@ -325,6 +498,232 @@ namespace AxcToAzure.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compare with 
+        ///existing Backlog.
+        /// </summary>
+        public static string LoginViewButtonCompare {
+            get {
+                return ResourceManager.GetString("LoginViewButtonCompare", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create the items.
+        /// </summary>
+        public static string LoginViewButtonCreate {
+            get {
+                return ResourceManager.GetString("LoginViewButtonCreate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Credential Input.
+        /// </summary>
+        public static string LoginViewHeader {
+            get {
+                return ResourceManager.GetString("LoginViewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Link to the Backlog:.
+        /// </summary>
+        public static string LoginViewLink {
+            get {
+                return ResourceManager.GetString("LoginViewLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to http://tfs.proleit-ag.local:8080/tfs/*****/*****/_backlogs/backlog/*****/Epics.
+        /// </summary>
+        public static string LoginViewLinkBlankText {
+            get {
+                return ResourceManager.GetString("LoginViewLinkBlankText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide Id&apos;s for both fields.
+        /// </summary>
+        public static string LoginViewModelMessageIds {
+            get {
+                return ResourceManager.GetString("LoginViewModelMessageIds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid Password!.
+        /// </summary>
+        public static string LoginViewModelMessagePassword {
+            get {
+                return ResourceManager.GetString("LoginViewModelMessagePassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid Proxy Adress or uncheck the Box!.
+        /// </summary>
+        public static string LoginViewModelMessageProxy {
+            get {
+                return ResourceManager.GetString("LoginViewModelMessageProxy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid URL!.
+        /// </summary>
+        public static string LoginViewModelMessageUrl {
+            get {
+                return ResourceManager.GetString("LoginViewModelMessageUrl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please enter a valid Usename!.
+        /// </summary>
+        public static string LoginViewModelMessageUsername {
+            get {
+                return ResourceManager.GetString("LoginViewModelMessageUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password:.
+        /// </summary>
+        public static string LoginViewPassword {
+            get {
+                return ResourceManager.GetString("LoginViewPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Project Id (optional):.
+        /// </summary>
+        public static string LoginViewProjectId {
+            get {
+                return ResourceManager.GetString("LoginViewProjectId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Proxy Adress:.
+        /// </summary>
+        public static string LoginViewProxyAddress {
+            get {
+                return ResourceManager.GetString("LoginViewProxyAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Go To &apos;Network &amp; Internet&apos; -&gt; &apos;Proxy&apos; to see the Address.
+        /// </summary>
+        public static string LoginViewProxyBlankText {
+            get {
+                return ResourceManager.GetString("LoginViewProxyBlankText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use this option only if you need a proxy to enter the Backlog..
+        /// </summary>
+        public static string LoginViewProxyToolTip {
+            get {
+                return ResourceManager.GetString("LoginViewProxyToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Proxy.
+        /// </summary>
+        public static string LoginViewProxyUse {
+            get {
+                return ResourceManager.GetString("LoginViewProxyUse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Team Id (optional):.
+        /// </summary>
+        public static string LoginViewTeamId {
+            get {
+                return ResourceManager.GetString("LoginViewTeamId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Username:.
+        /// </summary>
+        public static string LoginViewUsername {
+            get {
+                return ResourceManager.GetString("LoginViewUsername", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to firstname.lastname@proleit.com.
+        /// </summary>
+        public static string LoginViewUsernameBlankText {
+            get {
+                return ResourceManager.GetString("LoginViewUsernameBlankText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Alert.
+        /// </summary>
+        public static string MessageAlert {
+            get {
+                return ResourceManager.GetString("MessageAlert", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        public static string MessageError {
+            get {
+                return ResourceManager.GetString("MessageError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Establishing Connection to Backlog.
+        /// </summary>
+        public static string MessageEstablishConnection {
+            get {
+                return ResourceManager.GetString("MessageEstablishConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finished!.
+        /// </summary>
+        public static string MessageFinished {
+            get {
+                return ResourceManager.GetString("MessageFinished", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error. Check your URL, Credentials and Internet Connection.
+        /// </summary>
+        public static string MessageLoginError {
+            get {
+                return ResourceManager.GetString("MessageLoginError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connection Successfully established.
+        /// </summary>
+        public static string MessageLoginSuccess {
+            get {
+                return ResourceManager.GetString("MessageLoginSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set the Application Language to German?
         ///(Default Language: English).
         /// </summary>
@@ -340,6 +739,60 @@ namespace AxcToAzure.Properties {
         public static string MessageSetLanguageHeader {
             get {
                 return ResourceManager.GetString("MessageSetLanguageHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warning.
+        /// </summary>
+        public static string MessageWarning {
+            get {
+                return ResourceManager.GetString("MessageWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Azure Items.
+        /// </summary>
+        public static string ProgressViewHeader {
+            get {
+                return ResourceManager.GetString("ProgressViewHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An Error occured. Please check your Internet Connection..
+        /// </summary>
+        public static string ProgressViewModelErrorCreating {
+            get {
+                return ResourceManager.GetString("ProgressViewModelErrorCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to created. Problems occured with:.
+        /// </summary>
+        public static string ProgressViewModelPartiallyCreating {
+            get {
+                return ResourceManager.GetString("ProgressViewModelPartiallyCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Start with creating.
+        /// </summary>
+        public static string ProgressViewModelStartCreating {
+            get {
+                return ResourceManager.GetString("ProgressViewModelStartCreating", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to created successfully..
+        /// </summary>
+        public static string ProgressViewModelSuccessCreating {
+            get {
+                return ResourceManager.GetString("ProgressViewModelSuccessCreating", resourceCulture);
             }
         }
     }

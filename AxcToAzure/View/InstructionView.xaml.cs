@@ -14,14 +14,14 @@ using System.Windows.Shapes;
 
 namespace AxcToAzure.View
 {
-    /// <summary>
-    /// Interaction logic for APIInstructionWindow.xaml
-    /// </summary>
-    public partial class APIInstructionWindow : Window
+  /// <summary>
+  /// Interaction logic for InstructionView.xaml
+  /// </summary>
+  public partial class InstructionView : Window
+  {
+    public InstructionView()
     {
-        public APIInstructionWindow()
-        {
-            InitializeComponent();
-        }
+      InitializeComponent();
     }
+  }
 }

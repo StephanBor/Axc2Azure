@@ -8,6 +8,7 @@
              d:DataContext="{d:DesignInstance vm:ItemSelectViewModel, IsDesignTimeCreatable=False}"
              xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
              xmlns:utilities="clr-namespace:AxcToAzure.Utilities"
+              xmlns:resx="clr-namespace:AxcToAzure.Properties"
              xmlns:local="clr-namespace:AxcToAzure.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontSize="20" >
@@ -25,7 +26,7 @@
     <!--Caption-->
     <StackPanel>
 
-      <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.ItemSelectViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+      <TextBlock Grid.Row="0" Text="{x:Static resx:Resources.ItemSelectViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
       <TextBlock Grid.Row="0" Text="{x:Static resx:Resources.ItemSelectViewInstruction}" Margin="5,0,0,0" />
     </StackPanel>
     <!--Work Area -->

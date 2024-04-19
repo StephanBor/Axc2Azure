@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Excel = Microsoft.Office.Interop.Excel;
+using Resx = AxcToAzure.Properties.Resources;
 
 namespace AxcToAzure.ViewModel
 {
@@ -53,6 +54,11 @@ namespace AxcToAzure.ViewModel
     }
     #endregion
     #region Methods
+    /// <summary>
+    /// Filtert aus der Datenliste alle Einträge, die vorher abgewählt wurden
+    /// </summary>
+    /// <param name="items"></param>
+    /// <param name="defaultEmployee"></param>
     public void FilterCreatableItems(ObservableCollection<DataItem> items, int defaultEmployee)
     {
       DataItems = new ObservableCollection<DataItem>();
@@ -62,22 +68,27 @@ namespace AxcToAzure.ViewModel
       }
       SetItemEmployees(defaultEmployee);
     }
+    /// <summary>
+    /// Legt die Mitarbeiter für das Item fest
+    /// </summary>
+    /// <param name="defaultEmployee"></param>
     public void SetItemEmployees(int defaultEmployee)
     {
       List<DataItem> newTasks = new List<DataItem>();
       foreach (var item in DataItems)
       {
         if (item.Employee == "") continue;
+        // separiere nach Mitarbeitern
         string[] employees = item.Employee.Split(";");
         if (item.Type == "Task")
-        { //Copy the task
+        { //Kopiere die Tasks wenn mehrere Mitarbeiter gesetzt wurden
           for (int i = 0; i < employees.Length; i++)
           {
             string[] names = employees[i].Split(",");
             string firstname = names[1].Trim();
             string lastname = names[0].Trim();
             string axcName = firstname + " " + lastname + @"<PROLEIT-AG\\\\" + firstname + "_" + lastname + @">\"",";
-            if (i == 0) //Setze Employee für schon bestehenden task, danach kreire neue
+            if (i == 0) //Setze Mitarbeiter für schon bestehenden task, danach kreire neue
             {
               item.AzureEmployee = axcName;
           
@@ -120,6 +131,11 @@ namespace AxcToAzure.ViewModel
         if (item.Type == "User Story") Stories.Add(item);
       }
     }
+    /// <summary>
+    /// Setze die Default Tasks an die Userstories (Id zählt hoch)
+    /// </summary>
+    /// <param name="newTasks"></param>
+    /// <param name="story"></param>
     private void AddDefaultTasksToStory(string[] newTasks, DataItem story)
     {
       int newChildIndex = GetLastChildIndexOfStory(story.Children) + 1;
@@ -138,6 +154,11 @@ namespace AxcToAzure.ViewModel
         }
       }
     }
+    /// <summary>
+    /// Holt den letzten Index
+    /// </summary>
+    /// <param name="Children"></param>
+    /// <returns></returns>
     private int GetLastChildIndexOfStory(ObservableCollection<DataItem> Children)
     {
       int lastIndex = 0;
@@ -174,6 +195,9 @@ namespace AxcToAzure.ViewModel
       Process.Start(ps);
       Working.Invoke(this, false);
     }
+    /// <summary>
+    /// Excel neu einlesen
+    /// </summary>
     public void RefreshDefaultTaskList()
     {
       Working.Invoke(this, true);
@@ -188,7 +212,7 @@ namespace AxcToAzure.ViewModel
         // Holt sich die Anzahl der Zeilen
         int rows = ws.UsedRange.Rows.Count;
         Regex taskReg = new Regex(@"^\d+\.\d+\.\d+\.\d+\Z");
-        //Sortierschleife Start bei 2 wegen Header
+        //Sortierschleife Start bei 2 wegen Header in Excel
         for (int i = 2; i <= rows; i++)
         {
           string key = ws.Range[("A" + i).ToString()].Text.ToString();
@@ -196,7 +220,7 @@ namespace AxcToAzure.ViewModel
           DefaultTaskList.Add(key, value);
         }
       }
-      catch (Exception ex) { MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error); }
+      catch (Exception ex) { MessageBox.Show(ex.ToString(), Resx.MessageError, MessageBoxButton.OK, MessageBoxImage.Error); }
       workBook.Close();
       Working.Invoke(this, false);
     }

@@ -8,8 +8,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
-using xls2aturenet6.Model;
+using Resx = AxcToAzure.Properties.Resources;
 
 namespace AxcToAzure.ViewModel
 {
@@ -50,6 +51,9 @@ namespace AxcToAzure.ViewModel
     public MainWindowViewModel()
     {
       MainWindowViewModel mainWindow = this;
+      var Result = MessageBox.Show(Resx.MessageSetLanguage, Resx.MessageSetLanguageHeader, MessageBoxButton.YesNo, MessageBoxImage.Question);
+      if (Result == MessageBoxResult.Yes) System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("de-DE");
+      else System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
       ExcelViewModel = new ExcelViewModel();
       ItemSelectViewModel = new ItemSelectViewModel();
       DefaultTaskViewModel = new DefaultTaskViewModel();

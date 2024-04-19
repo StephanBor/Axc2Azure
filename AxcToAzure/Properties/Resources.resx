@@ -117,6 +117,54 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApiConnectorBacklogNotFound" xml:space="preserve">
+    <value>Backlog not found.</value>
+  </data>
+  <data name="ApiConnectorErrorOnItem" xml:space="preserve">
+    <value>Error on item:</value>
+  </data>
+  <data name="ApiConnectorErrorOnItemContinue" xml:space="preserve">
+    <value>Would you like to continue with the next item?</value>
+  </data>
+  <data name="ApiConnectorErrorOnItemCreatedWOName" xml:space="preserve">
+    <value>Created without Name!</value>
+  </data>
+  <data name="ApiConnectorErrorOnItemNotCreated" xml:space="preserve">
+    <value>Not created!</value>
+  </data>
+  <data name="ApiConnectorErrorOnItemTryAgain" xml:space="preserve">
+    <value>Would you like to try again (without an employee set)?</value>
+  </data>
+  <data name="ApiConnectorNameNotFound" xml:space="preserve">
+    <value>Could not detect the name of the Backlog.
+Is the correct name:</value>
+  </data>
+  <data name="ApiInstructionsColumn1" xml:space="preserve">
+    <value>IMPORTANT! Do this procedure only if the Backlog 
+could not be found programmatically. 
+1.  Open the Backlog 
+2.  Press F12 and navigate to Networkanalysis (Chrome: Network) </value>
+  </data>
+  <data name="ApiInstructionsColumn2" xml:space="preserve">
+    <value>3.  Create a new Epic (can be deleted later)
+4.  Click the Request 'updateWorkItems' and then 'Request' (Chrome: 'Preview')
+5.  Fill in the numbers at the end (here teamId =315, projectId =507)</value>
+  </data>
+  <data name="BacklogCompareviewModelErrorGetBacklog" xml:space="preserve">
+    <value>Error while Reading the Backlog</value>
+  </data>
+  <data name="BacklogCompareviewModelSuccessGetBacklog" xml:space="preserve">
+    <value>Backlog successfully read. Comparing Data...</value>
+  </data>
+  <data name="BacklogCompareviewModelTryGetBacklog" xml:space="preserve">
+    <value>Trying to get existing Backlog</value>
+  </data>
+  <data name="BacklogViewHeader" xml:space="preserve">
+    <value>Azure Backlog</value>
+  </data>
+  <data name="BacklogViewReadBacklog" xml:space="preserve">
+    <value>Read Backlogs</value>
+  </data>
   <data name="ButtonBack" xml:space="preserve">
     <value>Back</value>
   </data>
@@ -125,6 +173,9 @@
   </data>
   <data name="ButtonExit" xml:space="preserve">
     <value>Exit</value>
+  </data>
+  <data name="ButtonStart" xml:space="preserve">
+    <value>Start</value>
   </data>
   <data name="DefaultTaskViewButtonOpen" xml:space="preserve">
     <value>Open</value>
@@ -141,11 +192,19 @@
   <data name="DefaultTaskViewInstruction" xml:space="preserve">
     <value>Add Default Tasks to the User-Stories</value>
   </data>
+  <data name="ExcelInstructionColumn1" xml:space="preserve">
+    <value>1.  Open and select Project
+2.  Tab Reports
+3.  Click P_ProjectReport
+4.  Instead of 'fester Zeitraum' --&gt; select 'Projektzeitraum'</value>
+  </data>
+  <data name="ExcelInstructionColumn2" xml:space="preserve">
+    <value>5.  Okay --&gt; Column Selection Window opens
+6.  'Select Bearbeiter' and 'Proj.-Nr./PSP'
+7.  Okay --&gt; Report will be created</value>
+  </data>
   <data name="ExcelViewButtonReadFile" xml:space="preserve">
     <value>Read File</value>
-  </data>
-  <data name="ExcelViewFinished" xml:space="preserve">
-    <value>Finished!</value>
   </data>
   <data name="ExcelViewHeader" xml:space="preserve">
     <value>Excel Input</value>
@@ -169,7 +228,7 @@
     <value>e.g. C</value>
   </data>
   <data name="ExcelViewItemEmployeeDefault" xml:space="preserve">
-    <value>Default Default Employee (if more than 1):</value>
+    <value>Default Employee (if more than 1):</value>
   </data>
   <data name="ExcelViewItemEmployeeDefaultToolTip" xml:space="preserve">
     <value>Set which employee will be assigned to the items, if there is more than one Employee set.
@@ -189,6 +248,12 @@ Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'</
   <data name="ExcelViewItemNumberToolTip" xml:space="preserve">
     <value>Set which column contains the Projectnumber of the Items.</value>
   </data>
+  <data name="ExcelViewModelChildren" xml:space="preserve">
+    <value>Setting Children for Data...</value>
+  </data>
+  <data name="ExcelViewModelReading" xml:space="preserve">
+    <value>Reading: </value>
+  </data>
   <data name="ExcelViewPath" xml:space="preserve">
     <value>Path to the Excel-File (.xlsx):</value>
   </data>
@@ -207,11 +272,105 @@ Format: 'Lastname, Firstname' Separate multiple employees with a semicolon ';'</
   <data name="ItemSelectViewInstruction" xml:space="preserve">
     <value>Please select which items should be processed</value>
   </data>
+  <data name="LoginViewButtonCompare" xml:space="preserve">
+    <value>Compare with 
+existing Backlog</value>
+  </data>
+  <data name="LoginViewButtonCreate" xml:space="preserve">
+    <value>Create the items</value>
+  </data>
+  <data name="LoginViewHeader" xml:space="preserve">
+    <value>Credential Input</value>
+  </data>
+  <data name="LoginViewLink" xml:space="preserve">
+    <value>Link to the Backlog:</value>
+  </data>
+  <data name="LoginViewLinkBlankText" xml:space="preserve">
+    <value>http://tfs.proleit-ag.local:8080/tfs/*****/*****/_backlogs/backlog/*****/Epics</value>
+  </data>
+  <data name="LoginViewModelMessageIds" xml:space="preserve">
+    <value>Please provide Id's for both fields</value>
+  </data>
+  <data name="LoginViewModelMessagePassword" xml:space="preserve">
+    <value>Please enter a valid Password!</value>
+  </data>
+  <data name="LoginViewModelMessageProxy" xml:space="preserve">
+    <value>Please enter a valid Proxy Adress or uncheck the Box!</value>
+  </data>
+  <data name="LoginViewModelMessageUrl" xml:space="preserve">
+    <value>Please enter a valid URL!</value>
+  </data>
+  <data name="LoginViewModelMessageUsername" xml:space="preserve">
+    <value>Please enter a valid Usename!</value>
+  </data>
+  <data name="LoginViewPassword" xml:space="preserve">
+    <value>Password:</value>
+  </data>
+  <data name="LoginViewProjectId" xml:space="preserve">
+    <value>Project Id (optional):</value>
+  </data>
+  <data name="LoginViewProxyAddress" xml:space="preserve">
+    <value>Proxy Adress:</value>
+  </data>
+  <data name="LoginViewProxyBlankText" xml:space="preserve">
+    <value>Go To 'Network &amp; Internet' -&gt; 'Proxy' to see the Address</value>
+  </data>
+  <data name="LoginViewProxyToolTip" xml:space="preserve">
+    <value>Use this option only if you need a proxy to enter the Backlog.</value>
+  </data>
+  <data name="LoginViewProxyUse" xml:space="preserve">
+    <value>Use Proxy</value>
+  </data>
+  <data name="LoginViewTeamId" xml:space="preserve">
+    <value>Team Id (optional):</value>
+  </data>
+  <data name="LoginViewUsername" xml:space="preserve">
+    <value>Username:</value>
+  </data>
+  <data name="LoginViewUsernameBlankText" xml:space="preserve">
+    <value>firstname.lastname@proleit.com</value>
+  </data>
+  <data name="MessageAlert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="MessageError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="MessageEstablishConnection" xml:space="preserve">
+    <value>Establishing Connection to Backlog</value>
+  </data>
+  <data name="MessageFinished" xml:space="preserve">
+    <value>Finished!</value>
+  </data>
+  <data name="MessageLoginError" xml:space="preserve">
+    <value>Error. Check your URL, Credentials and Internet Connection</value>
+  </data>
+  <data name="MessageLoginSuccess" xml:space="preserve">
+    <value>Connection Successfully established</value>
+  </data>
   <data name="MessageSetLanguage" xml:space="preserve">
     <value>Set the Application Language to German?
 (Default Language: English)</value>
   </data>
   <data name="MessageSetLanguageHeader" xml:space="preserve">
     <value>Language Selection</value>
+  </data>
+  <data name="MessageWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="ProgressViewHeader" xml:space="preserve">
+    <value>Azure Items</value>
+  </data>
+  <data name="ProgressViewModelErrorCreating" xml:space="preserve">
+    <value>An Error occured. Please check your Internet Connection.</value>
+  </data>
+  <data name="ProgressViewModelPartiallyCreating" xml:space="preserve">
+    <value>created. Problems occured with:</value>
+  </data>
+  <data name="ProgressViewModelStartCreating" xml:space="preserve">
+    <value>Start with creating</value>
+  </data>
+  <data name="ProgressViewModelSuccessCreating" xml:space="preserve">
+    <value>created successfully.</value>
   </data>
 </root>

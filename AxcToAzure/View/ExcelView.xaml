@@ -180,7 +180,7 @@
         </Grid.RowDefinitions>
         <ProgressBar Grid.Row="0" Value="{Binding BarProgress}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,3,0"/>
         <TextBlock Grid.Row="1" Text="{Binding Path=Log, UpdateSourceTrigger=PropertyChanged}" Visibility="{Binding FileInReading,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0"/>
-        <TextBlock Grid.Row="1" Text="{x:Static resx:Resources.ExcelViewFinished}" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
+        <TextBlock Grid.Row="1" Text="{x:Static resx:Resources.MessageFinished}" Visibility="{Binding CanContinue,  Converter={StaticResource BoolToVisibilityConverter}}" Margin="3,0,0,0" />
       </Grid>
     </Grid>
     <!-- Button Area-->

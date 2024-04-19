@@ -9,6 +9,7 @@
              xmlns:converter="clr-namespace:AxcToAzure.Utilities.Converter"
              xmlns:utilities="clr-namespace:AxcToAzure.Utilities"
              xmlns:local="clr-namespace:AxcToAzure.View"
+              xmlns:resx="clr-namespace:AxcToAzure.Properties"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" FontSize="20" >
   <UserControl.Resources>
@@ -25,7 +26,7 @@
       <RowDefinition Height="2*" />
     </Grid.RowDefinitions>
     <!--Caption-->
-    <TextBlock Grid.Row="0"  Text="Azure Backlog" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
+    <TextBlock Grid.Row="0"  Text="{x:Static resx:Resources.BacklogViewHeader}" HorizontalAlignment="Center" FontSize="26" FontWeight="DemiBold" />
     <!--Work Area -->
     <ListBox Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled" FontSize="26" HorizontalContentAlignment="Stretch" ItemsSource="{Binding ItemsToCompare}" >
       <ListBox.ItemTemplate>
@@ -81,9 +82,9 @@
         <ColumnDefinition Width="*"/>
         <ColumnDefinition Width="2*"/>
       </Grid.ColumnDefinitions>
-      <Button Grid.Column="0" Content="Back" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
-      <Button Grid.Column="2" Content="Read Backlogs" Background="LightGreen" FontSize="26" Command="{Binding ReadBacklogsCommand}" />
-      <Button Grid.Column="4" Content="Continue" Background="Green" FontSize="26" Command="{Binding ContinueCommand}" Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
+      <Button Grid.Column="0" Content="{x:Static resx:Resources.ButtonBack}" Background="Red" FontSize="26"  Command="{Binding BackCommand}"/>
+      <Button Grid.Column="2" Content="{x:Static resx:Resources.BacklogViewReadBacklog}" Background="LightGreen" FontSize="26" Command="{Binding ReadBacklogsCommand}" />
+      <Button Grid.Column="4" Content="{x:Static resx:Resources.ButtonContinue}" Background="Green" FontSize="26" Command="{Binding ContinueCommand}" Visibility="{Binding CanContinue, Converter={StaticResource BoolToVisibilityConverter}}"/>
     </Grid>
   </Grid>
 </UserControl>

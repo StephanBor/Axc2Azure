@@ -12,8 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
+using Resx = AxcToAzure.Properties.Resources;
 
-namespace xls2aturenet6.Model
+namespace AxcToAzure.Model
 {
   public class APIConnector
   {
@@ -124,7 +125,7 @@ namespace xls2aturenet6.Model
           foreach (var potTeam in teams)
           {
             var potName = potTeam.Value<string>("name");
-            var Result = MessageBox.Show($"Could not detect the name of the repository. \nIs {potName} the correct name?", "Alert", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var Result = MessageBox.Show(Resx.ApiConnectorNameNotFound+$" {potName}", Resx.MessageAlert, MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
             if (Result == MessageBoxResult.Yes)
             {
@@ -139,7 +140,7 @@ namespace xls2aturenet6.Model
           }
           if (!foundBacklog)
           {
-            throw new Exception("Backlog not found!");
+            throw new Exception(Resx.ApiConnectorBacklogNotFound);
           }
         }
         }
@@ -153,7 +154,7 @@ namespace xls2aturenet6.Model
         Initialized = true;
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message, Resx.MessageError, MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public async Task<bool> GetExistingBacklog()
     {
@@ -192,7 +193,7 @@ namespace xls2aturenet6.Model
         }
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message, Resx.MessageError, MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public async Task<bool> CreateAndUpdateDataItems(List<DataItem> items, List<DataItem> parents = null)
     {
@@ -211,8 +212,8 @@ namespace xls2aturenet6.Model
           var jsonResponse = JObject.Parse(response).Value<JArray>("__wrappedArray")[0];
           if (jsonResponse.Value<string>("state").ToLower() == "error")
           {
-            string errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
-            var Result = MessageBox.Show(errortext + "\n\n" + "Would you like to try again (without an employee set)?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
+            string errortext = (Resx.ApiConnectorErrorOnItem+" " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
+            var Result = MessageBox.Show(errortext + "\n\n" + Resx.ApiConnectorErrorOnItemTryAgain, Resx.MessageAlert, MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (Result == MessageBoxResult.Yes)
             {
               item.AzureEmployee = "";
@@ -223,13 +224,13 @@ namespace xls2aturenet6.Model
 
               if (jsonResponse.Value<string>("state").ToLower() == "error")
               {
-                errortext = ("Error on item: " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
-                Result = MessageBox.Show(errortext + "\n\n" + "Would you like to continue with the next item?", "Error", MessageBoxButton.YesNo, MessageBoxImage.Error);
-                ErrorItems.Add(item.Id + " " + item.Name + "\n Not created!");
+                errortext = (Resx.ApiConnectorErrorOnItem+" " + item.Id + " " + item.Name + "\n" + jsonResponse.Value<JObject>("error").Value<string>("message"));
+                Result = MessageBox.Show(errortext + "\n\n" + Resx.ApiConnectorErrorOnItemContinue , Resx.MessageError, MessageBoxButton.YesNo, MessageBoxImage.Error);
+                ErrorItems.Add(item.Id + " " + item.Name + "\n"+Resx.ApiConnectorErrorOnItemNotCreated);
                 if (Result == MessageBoxResult.Yes) continue;
                 else return false;
               }
-              ErrorItems.Add(item.Id + " " + item.Name + "\n Created without Name!");
+              ErrorItems.Add(item.Id + " " + item.Name + "\n"+Resx.ApiConnectorErrorOnItemCreatedWOName);
             }
             else return false;
           }
@@ -238,7 +239,7 @@ namespace xls2aturenet6.Model
         }
         return true;
       }
-      catch (Exception ex) { MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error); return false; }
+      catch (Exception ex) { MessageBox.Show(ex.Message, Resx.MessageError, MessageBoxButton.OK, MessageBoxImage.Error); return false; }
     }
     public string PrepareBodyForCreation(DataItem item, List<DataItem> parents)
     {
