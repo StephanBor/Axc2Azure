@@ -147,8 +147,9 @@ could not be found programmatically.
   </data>
   <data name="ApiInstructionsColumn2" xml:space="preserve">
     <value>3.  Create a new Epic (can be deleted later)
-4.  Click the Request 'updateWorkItems' and then 'Request' (Chrome: 'Preview')
-5.  Fill in the numbers at the end (here teamId =315, projectId =507)</value>
+4.  Click on the first Request and then 'Request' (Chrome: 'Preview')
+5.  Scroll down to 'updatePackage'. 
+     Fill in the numbers at the end (here teamId =518, projectId =309)</value>
   </data>
   <data name="BacklogCompareviewModelErrorGetBacklog" xml:space="preserve">
     <value>Error while Reading the Backlog</value>

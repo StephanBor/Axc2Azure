@@ -147,8 +147,9 @@ Programmablauf nicht zu finden ist.
   </data>
   <data name="ApiInstructionsColumn2" xml:space="preserve">
     <value>3.  Ein neues Epic anlegen (kann danach wieder gelöscht werden)
-4.  Die Anfrage 'updateWorkItems' auswählen und auf 'Anfrage' (Chrome: 'Preview') navigieren
-5.  Hinterste Nummern eintragen (hier: teamId =315, projectId =507)</value>
+4.  Die erste Anfrage 'auswählen und auf 'Anfrage' (Chrome: 'Preview') navigieren
+5.  Herunterscrollen bis 'updatePackage'. 
+     Hinterste Nummern eintragen (hier: teamId =518, projectId =309)</value>
   </data>
   <data name="BacklogCompareviewModelErrorGetBacklog" xml:space="preserve">
     <value>Fehler beim Lesen des Backlogs</value>

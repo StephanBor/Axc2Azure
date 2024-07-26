@@ -138,8 +138,9 @@ namespace AxcToAzure.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to 3.  Create a new Epic (can be deleted later)
-        ///4.  Click the Request &apos;updateWorkItems&apos; and then &apos;Request&apos; (Chrome: &apos;Preview&apos;)
-        ///5.  Fill in the numbers at the end (here teamId =315, projectId =507).
+        ///4.  Click on the first Request and then &apos;Request&apos; (Chrome: &apos;Preview&apos;)
+        ///5.  Scroll down to &apos;updatePackage&apos;. 
+        ///     Fill in the numbers at the end (here teamId =518, projectId =309).
         /// </summary>
         public static string ApiInstructionsColumn2 {
             get {
